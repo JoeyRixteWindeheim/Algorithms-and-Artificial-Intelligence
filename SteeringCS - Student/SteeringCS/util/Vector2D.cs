@@ -1,5 +1,4 @@
 ﻿using System;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -54,7 +53,7 @@ namespace SteeringCS
             return this;
         }
 
-        public Vector2D divide(double value)
+        public Vector2D Divide(double value)
         {
             this.X /= value;
             this.Y /= value;
@@ -63,13 +62,13 @@ namespace SteeringCS
 
         public Vector2D Normalize()
         {
-            Vector2D normal = new Vector2D();
-            normal.X = this.X / Length();
-            normal.Y = this.Y / Length();
-            return normal;
+
+            this.X = this.X / Length();
+            this.Y = this.Y / Length();
+            return this;
         }
 
-        public Vector2D truncate(double maX)
+        public Vector2D Truncate(double maX)
         {
             if (Length() > maX)
             {

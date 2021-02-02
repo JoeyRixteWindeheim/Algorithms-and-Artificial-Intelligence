@@ -7,8 +7,18 @@ using System.Threading.Tasks;
 
 namespace SteeringCS.behaviour
 {
-    class SeekBehaviour 
+    class SeekBehaviour : SteeringBehaviour
     {
-        // to do
+        public BaseGameEntity Target { get; set; }
+
+        public SeekBehaviour(MovingEntity ME, BaseGameEntity Target) : base(ME)
+        {
+            this.Target = Target;
+        }
+
+        public override Vector2D Calculate()
+        {
+            return Target.Pos.Sub(ME.Pos).Normalize();
+        }
     }
 }

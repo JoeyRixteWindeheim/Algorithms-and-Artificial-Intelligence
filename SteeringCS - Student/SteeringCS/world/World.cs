@@ -25,13 +25,22 @@ namespace SteeringCS
 
         private void populate()
         {
-            Vehicle v = new Vehicle(new Vector2D(10,10), this);
+
+
+            Vehicle v = new Vehicle(new Vector2D(10, 10), this);
             v.VColor = Color.Blue;
             entities.Add(v);
+            
+
 
             Target = new Vehicle(new Vector2D(100, 60), this);
             Target.VColor = Color.DarkRed;
             Target.Pos = new Vector2D(100, 40);
+            Target.steeringBehaviours.Add(new SeekBehaviour(Target, v));
+            entities.Add(Target);
+
+            v.steeringBehaviours.Add(new SeekBehaviour(v, Target));
+
         }
 
         public void Update(float timeElapsed)

@@ -13,7 +13,8 @@ namespace SteeringCS.entity
         public float Mass { get; set; }
         public float MaxSpeed { get; set; }
 
-        public SteeringBehaviour SB { get; set; }
+
+        public List<SteeringBehaviour> steeringBehaviours = new List<SteeringBehaviour>();
 
         public MovingEntity(Vector2D pos, World w) : base(pos, w)
         {
@@ -24,8 +25,23 @@ namespace SteeringCS.entity
 
         public override void Update(float timeElapsed)
         {
-            // to do
             Console.WriteLine(ToString());
+            Vector2D totalVector = new Vector2D();
+            foreach (SteeringBehaviour steeringBehaviour in steeringBehaviours)
+            {
+                Vector2D steeringBehaviourVector = steeringBehaviour.Calculate();
+                
+                totalVector.Add(steeringBehaviourVector);
+            }
+            // Acceleratie toevoegen op basis van Mass
+            if (totalVector.Length() != 0)
+            {
+                totalVector = totalVector.Normalize();
+                Vector2D acceleration = totalVector.Divide(Mass).Multiply(MaxSpeed);
+                
+                Velocity = Velocity.Add(totalVector.Multiply(timeElapsed));
+                Velocity = Velocity.Truncate(MaxSpeed);
+            }
         }
 
         public override string ToString()
