@@ -39,8 +39,9 @@ namespace SteeringCS.entity
                 totalVector = totalVector.Normalize();
                 Vector2D acceleration = totalVector.Divide(Mass).Multiply(MaxSpeed);
                 
-                Velocity = Velocity.Add(totalVector.Multiply(timeElapsed));
-                Velocity = Velocity.Truncate(MaxSpeed);
+                Velocity.Add(acceleration.Multiply(timeElapsed));
+                Velocity.Truncate(MaxSpeed);
+                Pos.Add(Velocity);
             }
         }
 

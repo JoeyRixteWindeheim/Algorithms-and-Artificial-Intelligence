@@ -36,7 +36,7 @@ namespace SteeringCS
             Target = new Vehicle(new Vector2D(100, 60), this);
             Target.VColor = Color.DarkRed;
             Target.Pos = new Vector2D(100, 40);
-            Target.steeringBehaviours.Add(new SeekBehaviour(Target, v));
+            //Target.steeringBehaviours.Add(new SeekBehaviour(Target, v));
             entities.Add(Target);
 
             v.steeringBehaviours.Add(new SeekBehaviour(v, Target));

@@ -18,7 +18,8 @@ namespace SteeringCS.behaviour
 
         public override Vector2D Calculate()
         {
-            return Target.Pos.Sub(ME.Pos).Normalize();
+            Vector2D v = Target.Pos.Clone();
+            return v.Sub(ME.Pos).Normalize();
         }
     }
 }
