@@ -12,6 +12,13 @@ namespace AAIFinalAssignment.behaviour
 
         protected bool isActive;
 
+        // This will determine the amount of force added through this behaviour.
+        // For example, if an object almost colliding with another, the urgency to avoid others is high.
+        // If the object is only slightly moving towards another, the urgency is low.
+        // in the first case, you want the entity to move faster than in the second case.
+        // Is probably going to get used in fuzzy logic(??)
+        protected double urgency;
+
         public SteeringBehaviour(MovingEntity ownEntity)
         {
             this.ownEntity = ownEntity;

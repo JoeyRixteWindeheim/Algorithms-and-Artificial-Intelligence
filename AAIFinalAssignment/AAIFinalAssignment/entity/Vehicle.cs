@@ -34,15 +34,13 @@ namespace AAIFinalAssignment.entity
             {
                 foreach (SteeringBehaviour steeringBehaviour in steeringBehaviours)
                 {
-                    velocity = Vector2.Add(velocity, steeringBehaviour.CalculateResultingVector());
+                    Vector2 behaviourResultingVector = steeringBehaviour.CalculateResultingVector();
+                    velocity = Vector2.Add(velocity, behaviourResultingVector);
                 }
 
                 // check if velocity > 0 before moving
                 if (velocity.Length() != 0)
                 {
-                    Vector2.Normalize(velocity);
-                    Vector2.Divide(velocity, (float)mass);
-                    Vector2.Multiply(velocity, (float)maxSpeed);
                     Vector2.Multiply(velocity, (float)gameTime.ElapsedGameTime.TotalSeconds);
 
                     // constraints velocity
