@@ -1,5 +1,6 @@
 ﻿using AAIFinalAssignment.entity;
 using AAIFinalAssignment.behaviour;
+using AAIFinalAssignment.util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -14,6 +15,7 @@ namespace AAIFinalAssignment
         private SpriteBatch _spriteBatch;
 
         private List<Vehicle> vehicles = new List<Vehicle>();
+        private ClickHandler clickHandler = new ClickHandler();
 
         public Game1()
         {
@@ -57,6 +59,11 @@ namespace AAIFinalAssignment
                 vehicle.Update(gameTime);
             }
 
+            // Move target to click
+            if (clickHandler.CheckMouseClicked() == true)
+            {
+                vehicles[1].Position = clickHandler.GetMousePosition();
+            }
 
             base.Update(gameTime);
         }
