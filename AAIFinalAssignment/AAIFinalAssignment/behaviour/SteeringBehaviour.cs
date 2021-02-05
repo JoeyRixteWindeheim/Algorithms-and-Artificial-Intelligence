@@ -25,6 +25,8 @@ namespace AAIFinalAssignment.behaviour
         }
 
         public abstract Vector2 CalculateResultingVector();
+
+        //public abstract Vector2 CalculateUrgencyVector(Vector2 currentBehaviour);
         
         private void EnableIfAppropriate()
         {

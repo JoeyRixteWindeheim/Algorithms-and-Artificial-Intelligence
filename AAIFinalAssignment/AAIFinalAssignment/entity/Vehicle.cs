@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics;
 using AAIFinalAssignment.behaviour;
 
 namespace AAIFinalAssignment.entity
@@ -29,7 +30,7 @@ namespace AAIFinalAssignment.entity
 
         public override void Update(GameTime gameTime)
         {
-            
+            Debug.WriteLine(Position);
             if (steeringBehaviours.Count != 0)
             {
                 foreach (SteeringBehaviour steeringBehaviour in steeringBehaviours)
@@ -41,6 +42,8 @@ namespace AAIFinalAssignment.entity
                 // check if velocity > 0 before moving
                 if (velocity.Length() != 0)
                 {
+                    //TODO: FIX
+                    //Vector2.Divide(velocity, mass);
                     Vector2.Multiply(velocity, (float)gameTime.ElapsedGameTime.TotalSeconds);
 
                     // constraints velocity
