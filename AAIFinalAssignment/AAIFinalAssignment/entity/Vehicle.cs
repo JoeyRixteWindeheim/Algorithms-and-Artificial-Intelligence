@@ -13,6 +13,9 @@ namespace AAIFinalAssignment.entity
         public override Vector2 velocity { get; set; }
         public override double mass { get; set; }
         public override double maxSpeed { get; set; }
+        public double minSpeed = 0;
+        public double maxAccel = 1;
+        public double drag = 0.99;
         public override Vector2 Position { get; set; }
         public override Texture2D Texture { get; set; }
 
@@ -33,27 +36,48 @@ namespace AAIFinalAssignment.entity
             Debug.WriteLine(Position);
             if (steeringBehaviours.Count != 0)
             {
+                Vector2 steering = new Vector2();
                 foreach (SteeringBehaviour steeringBehaviour in steeringBehaviours)
                 {
                     Vector2 behaviourResultingVector = steeringBehaviour.CalculateResultingVector();
-                    velocity = Vector2.Add(velocity, behaviourResultingVector);
+
+                    steering = Vector2.Add(steering, behaviourResultingVector);
                 }
+
+
+                if(steering.LengthSquared() > Math.Pow(maxAccel, 2))
+                {
+                    steering.Normalize();
+                    steering = steering * (Single)maxAccel;
+                }
+                velocity = velocity*(Single)drag + steering;
 
                 // check if velocity > 0 before moving
                 if (velocity.Length() != 0)
                 {
                     //TODO: FIX
                     //Vector2.Divide(velocity, mass);
-                    Vector2.Multiply(velocity, (float)gameTime.ElapsedGameTime.TotalSeconds);
+                    //velocity = Vector2.Multiply(velocity, (float)gameTime.ElapsedGameTime.TotalSeconds);
 
                     // constraints velocity
                     // Cannot edit velocity X and Y directly. Roundabout way of doing this is making a new vector2
-                    if (velocity.X > maxSpeed)
-                    { velocity = new Vector2((float)maxSpeed, velocity.Y); }
-                    if (velocity.Y > maxSpeed)
-                    { velocity = new Vector2(velocity.X, (float)maxSpeed); }
+                    
+                    Vector2 direction = new Vector2(velocity.X, velocity.Y);
+                    direction.Normalize();
+                    Vector2 max = direction * (Single)maxSpeed;
+                    Vector2 min = direction * (Single)minSpeed;
+                    if(max.LengthSquared() < velocity.LengthSquared())
+                    {
+                        velocity = new Vector2(max.X,max.Y);
 
-                    Position = Vector2.Add(Position, velocity);
+                    }
+                    else if (min.LengthSquared() > velocity.LengthSquared())
+                    {
+                        velocity = min;
+                    }
+                    
+
+                    Position = Vector2.Add(Position, velocity* (float)gameTime.ElapsedGameTime.TotalSeconds);
                 }
 
               

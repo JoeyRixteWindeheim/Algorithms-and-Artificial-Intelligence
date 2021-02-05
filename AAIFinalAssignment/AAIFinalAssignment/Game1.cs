@@ -24,7 +24,7 @@ namespace AAIFinalAssignment
             IsMouseVisible = true;
 
             // Make 2 new vehicles and make #1 target #2
-            vehicles.Add(new Vehicle(50, 5, new Vector2(0, 0)));
+            vehicles.Add(new Vehicle(50, 200, new Vector2(0, 0)));
             vehicles.Add(new Vehicle(50, 0, new Vector2(300, 300)));
             vehicles[0].steeringBehaviours.Add(new SeekBehaviour(vehicles[1], vehicles[0]));
 
