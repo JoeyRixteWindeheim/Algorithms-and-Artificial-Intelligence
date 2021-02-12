@@ -24,10 +24,28 @@ namespace AAIFinalAssignment
             IsMouseVisible = true;
 
             // Make 2 new vehicles and make #1 target #2
+            /*
             vehicles.Add(new Vehicle(50, 200, new Vector2(0, 0)));
             vehicles.Add(new Vehicle(50, 0, new Vector2(300, 300)));
             vehicles[0].steeringBehaviours.Add(new SeekBehaviour(vehicles[1], vehicles[0]));
+            */
 
+            for(int x = 0; x<3; x++)
+            {
+                for (int y = 0; y <3; y++)
+                {
+                    AddFlockVehicle(new Vector2(500 + x*10, 250 + y*10));
+                }
+            }
+
+        }
+
+        public void AddFlockVehicle(Vector2 position)
+        {
+            Vehicle vehicle = new Vehicle(50, 200, position);
+            vehicle.steeringBehaviours.Add(new AtractBehaviour(this, 100, vehicle));
+            //vehicle.steeringBehaviours.Add(new RepelBehaviour(this, 100, vehicle));
+            vehicles.Add(vehicle);
         }
 
         protected override void Initialize()
@@ -81,6 +99,27 @@ namespace AAIFinalAssignment
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+
+        public List<BaseEntity> GetEntitiesInRange(double range, BaseEntity center)
+        {
+            List<BaseEntity> inRange = new List<BaseEntity>();
+
+            range = Math.Pow(range, 2);
+
+            foreach(BaseEntity entity in vehicles)
+            {
+                if(entity != center)
+                {
+                    if (range > Vector2.DistanceSquared(entity.Position, center.Position))
+                    {
+                        inRange.Add(entity);
+                    }
+                }
+            }
+
+            return inRange;
         }
     }
 }

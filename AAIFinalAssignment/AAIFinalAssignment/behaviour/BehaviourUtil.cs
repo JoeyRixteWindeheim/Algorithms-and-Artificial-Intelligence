@@ -17,7 +17,7 @@ namespace AAIFinalAssignment.behaviour
 
 
                 // Increase vector if far away, decrease when near
-                double urgencyFactor = (resultingVector.Length() + 5) / (resultingVector.Length() + 2);//(Math.Pow(resultingVector.Length(), 3) / 1000)*-1+9;
+                double urgencyFactor = (resultingVector.Length() + 5) / (resultingVector.Length() + 2);
 
                 // Normalise distance -> convert to direction
                 resultingVector.Normalize();
