@@ -19,6 +19,8 @@ namespace AAIFinalAssignment.entity
         public override Vector2 Position { get; set; }
         public override Texture2D Texture { get; set; }
 
+        
+
         public Vehicle(double mass, double maxSpeed, Vector2 Position)
         {
             this.mass = mass;
@@ -102,7 +104,11 @@ namespace AAIFinalAssignment.entity
                 SpriteEffects.None,
                 0f
                 );
-
+            foreach(SteeringBehaviour behaviour in steeringBehaviours)
+            {
+                behaviour.Render(gameTime, _spriteBatch);
+            }
+            BehaviourUtil.RenderVector(_spriteBatch, velocity, Position, 0.01, Color.Red);
         }
 
     }

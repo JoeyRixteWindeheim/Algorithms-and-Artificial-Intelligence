@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -34,6 +35,45 @@ namespace AAIFinalAssignment.behaviour
 
 
 
+        }
+
+        public static Single GetRotation(Vector2 vector)
+        {
+
+            // Calculate the angle.
+            var Angle = MathF.Atan(vector.Y/ vector.X);
+
+            if (vector.X < 0)
+            {
+                Angle += (float)Math.PI;
+            }
+            return Angle;
+        }
+
+        public static Texture2D texture;
+        public static Texture2D getTexture(SpriteBatch _spriteBatch)
+        {
+            if (texture == null)
+            {
+                texture = new Texture2D(_spriteBatch.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
+                Int32[] pixel = { 0xFFFFFF }; // White. 0xFF is Red, 0xFF0000 is Blue
+                texture.SetData<Int32>(pixel, 0, texture.Width * texture.Height);
+            }
+
+            return texture;
+        }
+
+        public static void RenderVector(SpriteBatch _spriteBatch, Vector2 vector, Vector2 position,double multiplier, Color color)
+        {
+
+            Rectangle rectangle = new Rectangle(0, 0, (int)(vector.LengthSquared()* multiplier), 1);
+            _spriteBatch.Draw(getTexture(_spriteBatch), position, rectangle, color, GetRotation(vector), Vector2.Zero, 1, SpriteEffects.None, 0);
+        }
+
+        public static void RenderPoint(SpriteBatch _spriteBatch,Vector2 position,Color color)
+        {
+            Rectangle rectangle = new Rectangle((int)position.X, (int)position.Y, 3, 3);
+            _spriteBatch.Draw(getTexture(_spriteBatch), rectangle, color);
         }
     }
 }

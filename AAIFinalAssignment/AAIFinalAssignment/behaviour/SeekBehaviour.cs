@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
 using AAIFinalAssignment.entity;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace AAIFinalAssignment.behaviour
 {
     class SeekBehaviour : SteeringBehaviour
     {
         public BaseEntity Target { get; set; }
+
+        public Vector2 Currentvector { get; set; }
+
         public SeekBehaviour(BaseEntity target, MovingEntity ownEntity) : base(ownEntity)
         {
             Target = target;
@@ -17,7 +21,7 @@ namespace AAIFinalAssignment.behaviour
 
         public override Vector2 CalculateResultingVector()
         {
-            return BehaviourUtil.CalculateSeekVector(ownEntity.Position, Target.Position);
+            return Currentvector = BehaviourUtil.CalculateSeekVector(ownEntity.Position, Target.Position);
         }
 
         // TODO: Implement
@@ -29,6 +33,12 @@ namespace AAIFinalAssignment.behaviour
         protected override bool CheckIfShouldDisable()
         {
             throw new NotImplementedException();
+        }
+
+        public override void Render(GameTime gameTime, SpriteBatch _spriteBatch)
+        {
+            if(Game1.RenderSeeking)
+                BehaviourUtil.RenderVector(_spriteBatch, Currentvector, ownEntity.Position,20, Color.White);
         }
     }
 }

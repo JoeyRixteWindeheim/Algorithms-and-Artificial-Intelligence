@@ -1,5 +1,6 @@
 ﻿using AAIFinalAssignment.entity;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -27,6 +28,11 @@ namespace AAIFinalAssignment.behaviour
         }
 
         protected override bool CheckIfShouldEnable()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Render(GameTime gameTime, SpriteBatch _spriteBatch)
         {
             throw new NotImplementedException();
         }

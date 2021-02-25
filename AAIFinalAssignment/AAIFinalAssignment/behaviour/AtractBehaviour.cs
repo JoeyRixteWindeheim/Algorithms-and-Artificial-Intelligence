@@ -1,8 +1,7 @@
 ﻿using AAIFinalAssignment.entity;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AAIFinalAssignment.behaviour
 {
@@ -10,6 +9,8 @@ namespace AAIFinalAssignment.behaviour
     {
         public double Range { get; set; }
         public Game1 Game { get; set; }
+
+        public Vector2 currentVector { get; set; }
         public AtractBehaviour(Game1 game, double range, MovingEntity ownEntity) : base(ownEntity)
         {
             Range = range;
@@ -19,17 +20,15 @@ namespace AAIFinalAssignment.behaviour
         {
             var entities = Game.GetEntitiesInRange(Range, ownEntity);
 
-            Vector2 ResultingVector = new Vector2();
-
+            currentVector = new Vector2();
+            //get vector for every entity
             foreach (BaseEntity entity in entities)
             {
 
-                Vector2 target = Vector2.Subtract(entity.Position, ownEntity.Position);
-                target.Normalize();
-                target *= (Single)Range;
-                ResultingVector += BehaviourUtil.CalculateSeekVector(ownEntity.Position, target);
+                currentVector += 20*BehaviourUtil.CalculateSeekVector(ownEntity.Position, entity.Position);
+
             }
-            return ResultingVector;
+            return currentVector;
         }
 
         protected override bool CheckIfShouldDisable()
@@ -40,6 +39,12 @@ namespace AAIFinalAssignment.behaviour
         protected override bool CheckIfShouldEnable()
         {
             throw new NotImplementedException();
+        }
+
+        public override void Render(GameTime gameTime, SpriteBatch _spriteBatch)
+        {
+            if(Game1.RenderAtract)
+                BehaviourUtil.RenderVector(_spriteBatch, currentVector, ownEntity.Position, 20, Color.White);
         }
     }
 }

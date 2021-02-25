@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
 using AAIFinalAssignment.entity;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace AAIFinalAssignment.behaviour
 {
@@ -25,6 +26,8 @@ namespace AAIFinalAssignment.behaviour
         }
 
         public abstract Vector2 CalculateResultingVector();
+
+        public abstract void Render(GameTime gameTime, SpriteBatch _spriteBatch);
 
         //public abstract Vector2 CalculateUrgencyVector(Vector2 currentBehaviour);
         
