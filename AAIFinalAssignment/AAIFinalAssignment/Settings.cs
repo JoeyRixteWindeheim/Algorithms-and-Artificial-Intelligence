@@ -18,5 +18,6 @@ namespace AAIFinalAssignment
         public static int MaxSpeed { get; set; } = 200;
         public static int MinSpeed { get; set; } = 0;
         public static float MaxAccel { get; set; } = 1;
+        public static float Drag { get; set; } = 0.99f;
     }
 }

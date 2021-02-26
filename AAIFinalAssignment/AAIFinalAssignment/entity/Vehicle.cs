@@ -11,7 +11,6 @@ namespace AAIFinalAssignment.entity
     public class Vehicle : MovingEntity
     {
         public override Vector2 velocity { get; set; }
-        public double drag = 0.99;
         public override Vector2 Position { get; set; }
         public override Texture2D Texture { get; set; }
 
@@ -46,7 +45,7 @@ namespace AAIFinalAssignment.entity
                     steering.Normalize();
                     steering = steering * Settings.MaxAccel;
                 }
-                velocity = velocity*(Single)drag + steering;
+                velocity = velocity*Settings.Drag + steering;
 
                 // check if velocity > 0 before moving
                 if (velocity.Length() != 0)

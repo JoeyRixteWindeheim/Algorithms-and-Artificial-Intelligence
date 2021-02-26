@@ -14,8 +14,8 @@ namespace AAIFinalAssignment
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        private static List<Vehicle> vehicles = new List<Vehicle>();
-        private static List<Obstacle> obstacles = new List<Obstacle>();
+        public static List<Vehicle> vehicles = new List<Vehicle>();
+        public static List<Obstacle> Obstacles = new List<Obstacle>();
         private Vehicle target = new Vehicle(new Vector2(20,20));
         private ClickHandler clickHandler = new ClickHandler();
 
@@ -66,7 +66,7 @@ namespace AAIFinalAssignment
                     Obstacle obstacle = new Obstacle();
                     obstacle.Position = new Vector2(200*x, 200*y);
                     obstacle.Radius = 30;
-                    obstacles.Add(obstacle);
+                    Obstacles.Add(obstacle);
                 }
             }
             for (int x = 10; x < 20; x++)
@@ -74,7 +74,7 @@ namespace AAIFinalAssignment
                 Obstacle obstacle = new Obstacle();
                 obstacle.Position = new Vector2(30 * x, 500);
                 obstacle.Radius = 30;
-                obstacles.Add(obstacle);
+                Obstacles.Add(obstacle);
             }
             
 
@@ -172,7 +172,7 @@ namespace AAIFinalAssignment
             {
                 vehicle.Render(gameTime, _spriteBatch);
             }
-            foreach (Obstacle obstacle in obstacles)
+            foreach (Obstacle obstacle in Obstacles)
             {
                 obstacle.Render(gameTime, _spriteBatch);
             }
@@ -211,7 +211,7 @@ namespace AAIFinalAssignment
 
             range = Math.Pow(range, 2);
 
-            foreach (Obstacle obstacle in obstacles)
+            foreach (Obstacle obstacle in Obstacles)
             {
                 if (range > Vector2.DistanceSquared(obstacle.GetClosestCoords(center), center))
                 {

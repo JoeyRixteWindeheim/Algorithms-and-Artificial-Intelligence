@@ -14,18 +14,24 @@ namespace AAIFinalAssignment
         private HashSet<string> variables;
         private HashSet<string> functions;
 
+        private ConsoleFunctions ConsoleFunctions = new ConsoleFunctions();
+
         private static List<popup> popups = new List<popup>();
         public Console()
         {
             Open = false;
             input = "";
+
+            variables = new HashSet<string>();
+            functions = new HashSet<string>();
+
             var temp = Game1.settings.GetType().GetProperties();
             for (int i = 0; i < temp.Length; i++)
                 variables.Add(temp[i].Name);
 
-            var temp2 = Game1.settings.GetType().GetMethods();
-            for (int i = 0; i < temp.Length; i++)
-                functions.Add( temp[i].Name);
+            var temp2 = ConsoleFunctions.GetType().GetMethods();
+            for (int i = 0; i < temp2.Length; i++)
+                functions.Add( temp2[i].Name);
         }
 
         public void HandleKeys(Keys[] PressedKeys)
@@ -57,6 +63,12 @@ namespace AAIFinalAssignment
                         input += " ";
                     }
 
+                    //dot
+                    if(k == 190)
+                    {
+                        input += ".";
+                    }
+
                     //backspace
                     if (k == 8 && input != "")
                     {
@@ -84,9 +96,54 @@ namespace AAIFinalAssignment
                 Popup(5, "Unknown command");
         }
 
-        private void ExecuteFunction(string[] inputarray)
+        private void ExecuteFunction(string[] values)
         {
-            throw new NotImplementedException();
+            var method = ConsoleFunctions.GetType().GetMethod(values[0]);
+            var par = method.GetParameters();
+            object[] parameters = new object[par.Length];
+
+            if(values.Length <= par.Length)
+            {
+                Popup(5, "missing parameters");
+                return;
+            }
+
+            for (int i = 0; i < par.Length; i++) 
+            {
+                if (par[i].ParameterType == typeof(bool))
+                {
+                    bool parameter;
+                    if (!bool.TryParse(values[i + 1], out parameter))
+                    {
+                        Popup(5, "could not parse " + values[i + 1]);
+                        return;
+                    }
+                    parameters[i] = parameter;
+                }
+                if (par[i].ParameterType == typeof(int))
+                {
+                    int parameter;
+                    if (!int.TryParse(values[i + 1], out parameter))
+                    {
+                        Popup(5, "could not parse " + values[i + 1]);
+                        return;
+                    }
+                    parameters[i] = parameter;
+                }
+                if (par[i].ParameterType == typeof(float))
+                {
+                    float parameter;
+                    if (!float.TryParse(values[i + 1], out parameter))
+                    {
+                        Popup(5, "could not parse " + values[i + 1]);
+                        return;
+                    }
+                    parameters[i] = parameter;
+                }
+
+            }
+            method.Invoke(ConsoleFunctions,parameters);
+            input = "";
         }
 
         private void SetVariable(string[] inputarray)
@@ -139,24 +196,26 @@ namespace AAIFinalAssignment
                     Popup(5, "could not parse value");
                 }
             }
+            if (type == typeof(float))
+            {
+                float result;
+                if (float.TryParse(inputarray[1], out result))
+                {
+                    variable.SetValue(Game1.settings, result);
+                    input = "";
+                    Popup(5, "succes");
+                }
+                else
+                {
+                    Popup(5, "could not parse value");
+                }
+            }
         }
 
         public static void Popup(int timeSeconds, string message)
         {
             popups.Add(new popup(DateTime.Now.AddSeconds(timeSeconds), message));
         }
-
-
-        /*
-         * 
-            32
-            48-57
-            65-90
-            96-105
-            187
-            190
-         */
-
 
         public void Render(GameTime gameTime, SpriteBatch _spriteBatch)
         {
