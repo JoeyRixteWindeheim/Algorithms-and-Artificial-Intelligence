@@ -19,7 +19,7 @@ namespace AAIFinalAssignment.behaviour
 
         public override Vector2 CalculateResultingVector()
         {
-            return BehaviourUtil.CalculateSeekVector(ownEntity.Position, Target.Position) * -1; 
+            return BehaviourUtil.CalculateSeekVector(ownEntity.Position, Target.GetClosestCoords(ownEntity.Position)) * -1; 
         }
 
         protected override bool CheckIfShouldDisable()
@@ -34,7 +34,7 @@ namespace AAIFinalAssignment.behaviour
 
         public override void Render(GameTime gameTime, SpriteBatch _spriteBatch)
         {
-            throw new NotImplementedException();
+           
         }
     }
 }

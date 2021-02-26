@@ -18,10 +18,16 @@ namespace AAIFinalAssignment
         private Vehicle target = new Vehicle(10,0,new Vector2(20,20));
         private ClickHandler clickHandler = new ClickHandler();
 
+        public const int MinCoords = -10;
+        public const int MaxCoords = 500;
 
-        public static bool RenderSeeking = false;
-        public static bool RenderAtract = false;
-        public static bool RenderRepel = true;
+
+        public static bool RenderSeeking = true;
+        public static bool RenderDistancing = true;
+        public static bool RenderGroupPressure = true;
+        public static bool RenderWander = true;
+
+
 
 
         public Game1()
@@ -38,18 +44,15 @@ namespace AAIFinalAssignment
             vehicles.Add(new Vehicle(50, 0, new Vector2(300, 300)));
             vehicles[0].steeringBehaviours.Add(new SeekBehaviour(vehicles[1], vehicles[0]));
             */
-            /*
-            for(int x = 0; x<3; x++)
+            
+            for(int x = 0; x<2; x++)
             {
-                for (int y = 0; y <3; y++)
+                for (int y = 0; y <1; y++)
                 {
-                    AddFlockVehicle(new Vector2(500 + x*10, 250 + y*10));
+                    AddFlockVehicle(new Vector2(500 + x*100, 250 + y*100));
                 }
             }
-            */
-
-            AddFlockVehicle(new Vector2(20, 20));
-            AddFlockVehicle(new Vector2(200, 200));
+            
 
 
         }
@@ -57,9 +60,11 @@ namespace AAIFinalAssignment
         public void AddFlockVehicle(Vector2 position)
         {
             Vehicle vehicle = new Vehicle(50, 200, position);
-            //vehicle.steeringBehaviours.Add(new AtractBehaviour(this, 100, vehicle));
-            vehicle.steeringBehaviours.Add(new SeekBehaviour(target, vehicle));
-            vehicle.steeringBehaviours.Add(new FlockingBehaviour(this, 100, vehicle));
+            //vehicle.steeringBehaviours.Add(new SeekBehaviour(target, vehicle));
+            vehicle.steeringBehaviours.Add(new FleeBehaviour(target, vehicle));
+            //vehicle.steeringBehaviours.Add(new WanderBehaviour(vehicle));
+            vehicle.steeringBehaviours.Add(new DistancingBehaviour(this, 100, vehicle));
+            vehicle.steeringBehaviours.Add(new GroupPressureBehaviour(vehicle, 1, 120, this));
             vehicles.Add(vehicle);
         }
 
@@ -119,17 +124,17 @@ namespace AAIFinalAssignment
         }
 
 
-        public List<BaseEntity> GetEntitiesInRange(double range, BaseEntity center)
+        public List<MovingEntity> GetMovingEntitiesInRange(double range, BaseEntity center)
         {
-            List<BaseEntity> inRange = new List<BaseEntity>();
+            List<MovingEntity> inRange = new List<MovingEntity>();
 
             range = Math.Pow(range, 2);
 
-            foreach(BaseEntity entity in vehicles)
+            foreach(MovingEntity entity in vehicles)
             {
                 if(entity != center)
                 {
-                    if (range > Vector2.DistanceSquared(entity.Position, center.Position))
+                    if (range > Vector2.DistanceSquared(entity.GetClosestCoords(center.Position), center.Position))
                     {
                         inRange.Add(entity);
                     }
@@ -138,5 +143,6 @@ namespace AAIFinalAssignment
 
             return inRange;
         }
+        
     }
 }

@@ -21,7 +21,7 @@ namespace AAIFinalAssignment.behaviour
 
         public override Vector2 CalculateResultingVector()
         {
-            return Currentvector = BehaviourUtil.CalculateSeekVector(ownEntity.Position, Target.Position);
+            return Currentvector = BehaviourUtil.CalculateSeekVector(ownEntity.Position, Target.GetClosestCoords(ownEntity.Position));
         }
 
         // TODO: Implement

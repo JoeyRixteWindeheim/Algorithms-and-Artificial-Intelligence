@@ -80,6 +80,23 @@ namespace AAIFinalAssignment.entity
                     
 
                     Position = Vector2.Add(Position, velocity* (float)gameTime.ElapsedGameTime.TotalSeconds);
+                    int mapsize = Game1.MinCoords * -1 + Game1.MaxCoords;
+                    if (Position.X > Game1.MaxCoords)
+                    {
+                        Position = new Vector2(Position.X - mapsize, Position.Y);
+                    }
+                    if (Position.Y > Game1.MaxCoords)
+                    {
+                        Position = new Vector2(Position.X, Position.Y - mapsize);
+                    }
+                    if (Position.X < Game1.MinCoords)
+                    {
+                        Position = new Vector2(Position.X + mapsize, Position.Y);
+                    }
+                    if (Position.X < Game1.MinCoords)
+                    {
+                        Position = new Vector2(Position.X, Position.Y + mapsize);
+                    }
                 }
 
               

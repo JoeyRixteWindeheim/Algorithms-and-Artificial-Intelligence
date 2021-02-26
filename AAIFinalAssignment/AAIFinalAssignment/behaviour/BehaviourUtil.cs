@@ -8,11 +8,19 @@ namespace AAIFinalAssignment.behaviour
 {
     public class BehaviourUtil
     {
+
+        public static Texture2D texture;
+        public static Dictionary<int, Texture2D> Circles = new Dictionary<int, Texture2D>();
+
         public static Vector2 CalculateSeekVector(Vector2 start, Vector2 target)
         {
             Vector2 resultingVector = new Vector2(0, 0);
             // Get the distance between self and target
-            if (target != start)
+            var distance = Vector2.DistanceSquared(start, target);
+
+
+
+            if (distance > 1)
             {
                 resultingVector = Vector2.Subtract(target, start);
 
@@ -50,7 +58,6 @@ namespace AAIFinalAssignment.behaviour
             return Angle;
         }
 
-        public static Texture2D texture;
         public static Texture2D getTexture(SpriteBatch _spriteBatch)
         {
             if (texture == null)
@@ -59,7 +66,42 @@ namespace AAIFinalAssignment.behaviour
                 Int32[] pixel = { 0xFFFFFF }; // White. 0xFF is Red, 0xFF0000 is Blue
                 texture.SetData<Int32>(pixel, 0, texture.Width * texture.Height);
             }
+            return texture;
+        }
 
+
+
+        public static Texture2D getCircleTexture(SpriteBatch _spriteBatch,int radius)
+        {
+            if (Circles.ContainsKey(radius))
+                return Circles[radius];
+
+            Texture2D texture = new Texture2D(_spriteBatch.GraphicsDevice, radius, radius);
+            Color[] colorData = new Color[radius * radius];
+
+            float diam = radius / 2f;
+            float diamsq = diam * diam;
+
+            for (int x = 0; x < radius; x++)
+            {
+                for (int y = 0; y < radius; y++)
+                {
+                    int index = x * radius + y;
+                    Vector2 pos = new Vector2(x - diam, y - diam);
+                    if (pos.LengthSquared() <= diamsq)
+                    {
+                        colorData[index] = Color.White;
+                    }
+                    else
+                    {
+                        colorData[index] = Color.Transparent;
+                    }
+                }
+            }
+
+            texture.SetData(colorData);
+
+            Circles.Add(radius, texture);
             return texture;
         }
 
@@ -74,6 +116,12 @@ namespace AAIFinalAssignment.behaviour
         {
             Rectangle rectangle = new Rectangle((int)position.X, (int)position.Y, 3, 3);
             _spriteBatch.Draw(getTexture(_spriteBatch), rectangle, color);
+        }
+
+        public static void RenderCircle(SpriteBatch _spriteBatch, Vector2 position, float range, Color color)
+        {
+            Rectangle rectangle = new Rectangle((int)position.X, (int)position.Y, 3, 3);
+            _spriteBatch.Draw(getCircleTexture(_spriteBatch,1), rectangle, color);
         }
     }
 }

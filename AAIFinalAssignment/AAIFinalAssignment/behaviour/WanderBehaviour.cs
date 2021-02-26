@@ -1,0 +1,77 @@
+﻿using AAIFinalAssignment.entity;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace AAIFinalAssignment.behaviour
+{
+    public class WanderBehaviour : SteeringBehaviour
+    {
+        public WanderBehaviour(MovingEntity ownEntity) : base(ownEntity)
+        {
+
+        }
+
+
+        public Vector2 wanderVector;
+        public Vector2 CurrentVector;
+
+        private DateTime lastupdate = DateTime.MinValue;
+
+        public override Vector2 CalculateResultingVector()
+        {
+            if(DateTime.Now - lastupdate < TimeSpan.FromMilliseconds(1000))
+            {
+                return CurrentVector;
+            }
+            lastupdate = DateTime.Now;
+            wanderVector = ownEntity.velocity;
+            Random random = new Random(DateTime.Now.Millisecond+DateTime.Now.Second);
+
+            if (wanderVector == Vector2.Zero)
+            {
+                wanderVector.X = ((float)random.Next(-100, 100))+0.05f;
+                wanderVector.Y = ((float)random.Next(-100, 100))+0.01f;
+            }
+
+
+            wanderVector.Normalize();
+
+            wanderVector *= 2;
+
+            CurrentVector = new Vector2(0,0);
+
+            CurrentVector.X += random.Next(-100, 100);
+            CurrentVector.Y += random.Next(-100, 100);
+
+            CurrentVector.Normalize();
+
+            CurrentVector = CurrentVector + wanderVector;
+            
+            return CurrentVector;
+
+        }
+
+        public override void Render(GameTime gameTime, SpriteBatch _spriteBatch)
+        {
+            if (Game1.RenderGroupPressure)
+            {
+                BehaviourUtil.RenderCircle(_spriteBatch, wanderVector, 10, Color.Yellow);
+                BehaviourUtil.RenderVector(_spriteBatch, CurrentVector, ownEntity.Position, 20, Color.Yellow);
+            }
+                
+        }
+
+        protected override bool CheckIfShouldDisable()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override bool CheckIfShouldEnable()
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
