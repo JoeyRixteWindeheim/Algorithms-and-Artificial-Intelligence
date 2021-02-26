@@ -37,7 +37,7 @@ namespace AAIFinalAssignment.behaviour
 
         public override void Render(GameTime gameTime, SpriteBatch _spriteBatch)
         {
-            if(Game1.RenderSeeking)
+            if(Settings.RenderSeeking)
                 BehaviourUtil.RenderVector(_spriteBatch, Currentvector, ownEntity.Position,20, Color.White);
         }
     }

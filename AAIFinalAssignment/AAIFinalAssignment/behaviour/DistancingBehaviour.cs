@@ -9,20 +9,16 @@ namespace AAIFinalAssignment.behaviour
 {
     public class DistancingBehaviour : SteeringBehaviour
     {
-        public double Range { get; set; }
-        public Game1 Game { get; set; }
 
         public List<Vector2> targets { get; set; }
 
         public Vector2 currentVector { get; set; }
-        public DistancingBehaviour(Game1 game,double range, MovingEntity ownEntity) : base(ownEntity)
+        public DistancingBehaviour(MovingEntity ownEntity) : base(ownEntity)
         {
-            Range = range;
-            Game = game;
         }
         public override Vector2 CalculateResultingVector()
         {
-            var entities = Game.GetMovingEntitiesInRange(Range, ownEntity);
+            var entities = Game1.GetMovingEntitiesInRange(Settings.DistancingRange, ownEntity);
 
             currentVector = new Vector2();
             targets = new List<Vector2>();
@@ -31,7 +27,7 @@ namespace AAIFinalAssignment.behaviour
             {
                 Vector2 target = Vector2.Subtract(ownEntity.Position, entity.GetClosestCoords(ownEntity.Position));
                 target = Vector2.Normalize(target);
-                target *= (float)Range/2;
+                target *= (float)Settings.DistancingRange / 2;
                 target = Vector2.Add(target,entity.Position);
                 targets.Add(target);
                 currentVector += BehaviourUtil.CalculateSeekVector(ownEntity.Position, target);
@@ -51,7 +47,7 @@ namespace AAIFinalAssignment.behaviour
 
         public override void Render(GameTime gameTime, SpriteBatch _spriteBatch)
         {
-            if (Game1.RenderDistancing)
+            if (Settings.RenderDistancing)
             {
                 BehaviourUtil.RenderVector(_spriteBatch, currentVector, ownEntity.Position, 20, Color.Blue);
                 foreach(Vector2 target in targets)

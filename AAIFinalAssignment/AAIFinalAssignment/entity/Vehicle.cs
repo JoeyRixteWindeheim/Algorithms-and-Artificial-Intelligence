@@ -11,20 +11,14 @@ namespace AAIFinalAssignment.entity
     public class Vehicle : MovingEntity
     {
         public override Vector2 velocity { get; set; }
-        public override double mass { get; set; }
-        public override double maxSpeed { get; set; }
-        public double minSpeed = 0;
-        public double maxAccel = 1;
         public double drag = 0.99;
         public override Vector2 Position { get; set; }
         public override Texture2D Texture { get; set; }
 
         
 
-        public Vehicle(double mass, double maxSpeed, Vector2 Position)
+        public Vehicle( Vector2 Position)
         {
-            this.mass = mass;
-            this.maxSpeed = maxSpeed;
             this.Position = Position;
         }
 
@@ -47,10 +41,10 @@ namespace AAIFinalAssignment.entity
                 }
 
 
-                if(steering.LengthSquared() > Math.Pow(maxAccel, 2))
+                if(steering.LengthSquared() > Math.Pow(Settings.MaxAccel, 2))
                 {
                     steering.Normalize();
-                    steering = steering * (Single)maxAccel;
+                    steering = steering * Settings.MaxAccel;
                 }
                 velocity = velocity*(Single)drag + steering;
 
@@ -66,8 +60,8 @@ namespace AAIFinalAssignment.entity
                     
                     Vector2 direction = new Vector2(velocity.X, velocity.Y);
                     direction.Normalize();
-                    Vector2 max = direction * (Single)maxSpeed;
-                    Vector2 min = direction * (Single)minSpeed;
+                    Vector2 max = direction * Settings.MaxSpeed;
+                    Vector2 min = direction * Settings.MinSpeed;
                     if(max.LengthSquared() < velocity.LengthSquared())
                     {
                         velocity = new Vector2(max.X,max.Y);
@@ -79,23 +73,33 @@ namespace AAIFinalAssignment.entity
                     }
                     
 
-                    Position = Vector2.Add(Position, velocity* (float)gameTime.ElapsedGameTime.TotalSeconds);
-                    int mapsize = Game1.MinCoords * -1 + Game1.MaxCoords;
+                    Vector2 NewPosition = Vector2.Add(Position, velocity* (float)gameTime.ElapsedGameTime.TotalSeconds);
+
+                    foreach(Obstacle obstacle in Game1.GetObstaclesInRange(35, NewPosition))
+                    {
+                        if (obstacle.DoIHit(NewPosition))
+                        {
+                            velocity = Vector2.Zero;
+                            return;
+                        }
+                    }
+                    Position = NewPosition;
+                    
                     if (Position.X > Game1.MaxCoords)
                     {
-                        Position = new Vector2(Position.X - mapsize, Position.Y);
+                        Position = new Vector2(Position.X - Game1.Mapsize, Position.Y);
                     }
                     if (Position.Y > Game1.MaxCoords)
                     {
-                        Position = new Vector2(Position.X, Position.Y - mapsize);
+                        Position = new Vector2(Position.X, Position.Y - Game1.Mapsize);
                     }
                     if (Position.X < Game1.MinCoords)
                     {
-                        Position = new Vector2(Position.X + mapsize, Position.Y);
+                        Position = new Vector2(Position.X + Game1.Mapsize, Position.Y);
                     }
-                    if (Position.X < Game1.MinCoords)
+                    if (Position.Y < Game1.MinCoords)
                     {
-                        Position = new Vector2(Position.X, Position.Y + mapsize);
+                        Position = new Vector2(Position.X, Position.Y + Game1.Mapsize);
                     }
                 }
 
@@ -121,11 +125,14 @@ namespace AAIFinalAssignment.entity
                 SpriteEffects.None,
                 0f
                 );
-            foreach(SteeringBehaviour behaviour in steeringBehaviours)
+            if (Settings.RenderBehaviour)
             {
-                behaviour.Render(gameTime, _spriteBatch);
+                foreach (SteeringBehaviour behaviour in steeringBehaviours)
+                {
+                    behaviour.Render(gameTime, _spriteBatch);
+                }
+                BehaviourUtil.RenderVector(_spriteBatch, velocity, Position, 0.01, Color.Red);
             }
-            BehaviourUtil.RenderVector(_spriteBatch, velocity, Position, 0.01, Color.Red);
         }
 
     }

@@ -9,22 +9,16 @@ namespace AAIFinalAssignment.behaviour
 {
     public class GroupPressureBehaviour : SteeringBehaviour
     {
-        public int Range { get; set; }
-        public float Strength { get; set; }
         public Vector2 CurrentVector { get; set; }
 
-        public Game1 Game { get; set; }
 
-        public GroupPressureBehaviour(MovingEntity ownEntity,float strength, int range, Game1 game) : base(ownEntity)
+        public GroupPressureBehaviour(MovingEntity ownEntity) : base(ownEntity)
         {
-            Game = game;
-            Range = range;
-            Strength = strength;
 
         }
         public override Vector2 CalculateResultingVector()
         {
-            var entities = Game.GetMovingEntitiesInRange(Range, ownEntity);
+            var entities = Game1.GetMovingEntitiesInRange(Settings.GroupPressureRange, ownEntity);
 
             CurrentVector = new Vector2();
             foreach (MovingEntity entity in entities)
@@ -34,7 +28,6 @@ namespace AAIFinalAssignment.behaviour
             if (float.IsNaN(CurrentVector.X) || CurrentVector == Vector2.Zero)
                 return Vector2.Zero;
             CurrentVector.Normalize();
-            CurrentVector *= Strength;
 
             return CurrentVector;
 
@@ -42,7 +35,7 @@ namespace AAIFinalAssignment.behaviour
 
         public override void Render(GameTime gameTime, SpriteBatch _spriteBatch)
         {
-            if (Game1.RenderGroupPressure)
+            if (Settings.RenderGroupPressure)
                 BehaviourUtil.RenderVector(_spriteBatch, CurrentVector, ownEntity.Position, 20, Color.White);
         }
 

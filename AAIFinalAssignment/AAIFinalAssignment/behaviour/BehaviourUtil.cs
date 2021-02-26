@@ -58,6 +58,14 @@ namespace AAIFinalAssignment.behaviour
             return Angle;
         }
 
+        public static Vector2 RotateVector(Vector2 vector,double angle)
+        {
+            Vector2 result = new Vector2(0, 0);
+            result.X = (float)(Math.Cos(angle) * vector.X - Math.Sin(angle) * vector.Y);
+            result.Y = (float)(Math.Sin(angle) * vector.X + Math.Cos(angle) * vector.Y);
+            return result;
+        }
+
         public static Texture2D getTexture(SpriteBatch _spriteBatch)
         {
             if (texture == null)
@@ -118,10 +126,10 @@ namespace AAIFinalAssignment.behaviour
             _spriteBatch.Draw(getTexture(_spriteBatch), rectangle, color);
         }
 
-        public static void RenderCircle(SpriteBatch _spriteBatch, Vector2 position, float range, Color color)
+        public static void RenderCircle(SpriteBatch _spriteBatch, Vector2 position, int range, Color color)
         {
-            Rectangle rectangle = new Rectangle((int)position.X, (int)position.Y, 3, 3);
-            _spriteBatch.Draw(getCircleTexture(_spriteBatch,1), rectangle, color);
+            Rectangle rectangle = new Rectangle((int)position.X-range/2, (int)position.Y-range/2, range, range);
+            _spriteBatch.Draw(getCircleTexture(_spriteBatch,range), rectangle, color);
         }
     }
 }

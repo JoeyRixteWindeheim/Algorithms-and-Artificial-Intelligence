@@ -35,13 +35,12 @@ namespace AAIFinalAssignment.entity
         {
             float smallestDistance = Vector2.DistanceSquared(me,Position);
             Vector2 closest = Position;
-            int mapsize = Game1.MinCoords * -1 + Game1.MaxCoords;
 
             for(int i = 0; i <= 3; i+=2)
             {
                 Vector2 current = Position;
-                current.X += mapsize * x[i];
-                current.Y += mapsize * y[i];
+                current.X += Game1.Mapsize * x[i];
+                current.Y += Game1.Mapsize * y[i];
 
                 float distance = Vector2.DistanceSquared(current, me);
                 if (distance < smallestDistance)

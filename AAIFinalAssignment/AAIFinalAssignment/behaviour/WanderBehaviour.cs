@@ -56,9 +56,9 @@ namespace AAIFinalAssignment.behaviour
 
         public override void Render(GameTime gameTime, SpriteBatch _spriteBatch)
         {
-            if (Game1.RenderGroupPressure)
+            if (Settings.RenderWander)
             {
-                BehaviourUtil.RenderCircle(_spriteBatch, wanderVector, 10, Color.Yellow);
+                //BehaviourUtil.RenderCircle(_spriteBatch, wanderVector + ownEntity.Position, 10, Color.Yellow);
                 BehaviourUtil.RenderVector(_spriteBatch, CurrentVector, ownEntity.Position, 20, Color.Yellow);
             }
                 
