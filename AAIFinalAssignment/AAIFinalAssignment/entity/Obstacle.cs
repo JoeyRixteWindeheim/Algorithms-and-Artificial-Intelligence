@@ -22,7 +22,12 @@ namespace AAIFinalAssignment.entity
 
         public override void Render(GameTime gameTime, SpriteBatch _spriteBatch)
         {
-            BehaviourUtil.RenderCircle(_spriteBatch, Position, Radius, Color.Green);
+            if (Settings.RenderObstacles)
+            {
+                Vector2 topleft = new Vector2(Position.X, Position.Y);
+                foreach (Vector2 position in Game1.CalculateRenderPosition(topleft))
+                    BehaviourUtil.RenderCircle(_spriteBatch, position, Radius, Color.Green);
+            }
         }
 
         public bool DoIHit(Vector2 vector)

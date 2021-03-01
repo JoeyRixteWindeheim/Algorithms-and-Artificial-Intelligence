@@ -35,10 +35,10 @@ namespace AAIFinalAssignment.behaviour
             throw new NotImplementedException();
         }
 
-        public override void Render(GameTime gameTime, SpriteBatch _spriteBatch)
+        public override void Render(GameTime gameTime, SpriteBatch _spriteBatch,Vector2 Position)
         {
             if(Settings.RenderSeeking)
-                BehaviourUtil.RenderVector(_spriteBatch, Currentvector, ownEntity.Position,20, Color.White);
+                BehaviourUtil.RenderVector(_spriteBatch, Currentvector, Position,20, Color.White);
         }
     }
 }

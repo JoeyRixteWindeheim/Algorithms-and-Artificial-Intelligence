@@ -28,9 +28,8 @@ namespace AAIFinalAssignment.behaviour
                 Vector2 target = Vector2.Subtract(ownEntity.Position, entity.GetClosestCoords(ownEntity.Position));
                 target = Vector2.Normalize(target);
                 target *= (float)Settings.DistancingRange / 2;
-                target = Vector2.Add(target,entity.Position);
                 targets.Add(target);
-                currentVector += BehaviourUtil.CalculateSeekVector(ownEntity.Position, target);
+                currentVector += BehaviourUtil.CalculateSeekVector(ownEntity.Position, Vector2.Add(target, entity.Position));
             }
             return currentVector;
         }
@@ -45,14 +44,14 @@ namespace AAIFinalAssignment.behaviour
             throw new NotImplementedException();
         }
 
-        public override void Render(GameTime gameTime, SpriteBatch _spriteBatch)
+        public override void Render(GameTime gameTime, SpriteBatch _spriteBatch,Vector2 Position)
         {
             if (Settings.RenderDistancing)
             {
-                BehaviourUtil.RenderVector(_spriteBatch, currentVector, ownEntity.Position, 20, Color.Blue);
+                BehaviourUtil.RenderVector(_spriteBatch, currentVector, Position, 20, Color.Blue);
                 foreach(Vector2 target in targets)
                 {
-                    BehaviourUtil.RenderPoint(_spriteBatch, target, Color.Yellow);
+                    BehaviourUtil.RenderPoint(_spriteBatch, Vector2.Add(target, Position), Color.Yellow);
                 }
             }
                 

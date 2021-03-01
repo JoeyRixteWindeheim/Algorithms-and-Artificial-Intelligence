@@ -1,5 +1,6 @@
-﻿using AAIFinalAssignment.entity;
-using AAIFinalAssignment.behaviour;
+﻿using AAIFinalAssignment.behaviour;
+using AAIFinalAssignment.entity;
+using AAIFinalAssignment.Grid;
 using AAIFinalAssignment.util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,12 +17,12 @@ namespace AAIFinalAssignment
 
         public static List<Vehicle> vehicles = new List<Vehicle>();
         public static List<Obstacle> Obstacles = new List<Obstacle>();
-        private Vehicle target = new Vehicle(new Vector2(20,20));
+        private Vehicle target = new Vehicle(new Vector2(20, 20));
         private ClickHandler clickHandler = new ClickHandler();
 
-        public const int MinCoords = -10;
-        public const int MaxCoords = 1200;
-        public const int Mapsize =  MinCoords * -1 + MaxCoords;
+        public const int MinCoords = 0;
+        public const int MaxCoords = 1000;
+        public const int Mapsize = MinCoords * -1 + MaxCoords;
 
 
         public static Settings settings = new Settings();
@@ -31,34 +32,38 @@ namespace AAIFinalAssignment
         public static Console Console;
         public static List<Keys> LockedKeys;
 
+        public static MapGrid Grid;
+
+        public static Vector2 TopLeftScreen;
+
+        public static float ScreenTop { get => TopLeftScreen.Y; set => TopLeftScreen.Y = value; }
+        public static float ScreenBottom => ScreenTop + ScreenHeight;
+        public static float ScreenHeight => GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+        public static float ScreenLeft { get => TopLeftScreen.X; set => TopLeftScreen.X = value; }
+        public static float ScreenRight => ScreenLeft + ScreenWidth;
+        public static float ScreenWidth => GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            TopLeftScreen = new Vector2(0, 0);
+            Grid = new MapGrid(20);
 
             Console = new Console();
             LockedKeys = new List<Keys>();
 
-            //BehaviourUtil.RenderVector(_spriteBatch, new Vector2(5, 5), new Vector2(10, 10));
-
-            // Make 2 new vehicles and make #1 target #2
-            /*
-            vehicles.Add(new Vehicle(50, 200, new Vector2(0, 0)));
-            vehicles.Add(new Vehicle(50, 0, new Vector2(300, 300)));
-            vehicles[0].steeringBehaviours.Add(new SeekBehaviour(vehicles[1], vehicles[0]));
-            */
-
-            for (int x = 0; x<2; x++)
+            for (int x = 0; x < 2; x++)
             {
-                for (int y = 0; y <1; y++)
+                for (int y = 0; y < 1; y++)
                 {
-                    AddFlockVehicle(new Vector2(500 + x*100, 250 + y*100));
+                    AddFlockVehicle(new Vector2(500 + x * 100, 250 + y * 100));
                 }
             }
 
-
+            /*
             for (int x = 1; x < 6; x++)
             {
                 for (int y = 1; y < 6; y++)
@@ -76,8 +81,60 @@ namespace AAIFinalAssignment
                 obstacle.Radius = 30;
                 Obstacles.Add(obstacle);
             }
-            
+            */
 
+
+        }
+
+        public static void AddObstacle(Obstacle obstacle)
+        {
+            obstacle.Position = Game1.getWithinField(obstacle.Position);
+
+            int range = (int)(obstacle.Radius / Grid.RegionSize) + 1;
+
+            Vector2 MiddleShift = new Vector2(Grid.RegionSize / 2, Grid.RegionSize / 2);
+            double Range = Math.Pow(Grid.RegionSize / 2 + obstacle.Radius, 2);
+
+            for (int x = -range; x <= range; x++)
+            {
+                for (int y = -range; y <= range; y++)
+                {
+                    Vector2 RegionVector = new Vector2(x * Grid.RegionSize + obstacle.Position.X, y * Grid.RegionSize + obstacle.Position.Y);
+                    Vector2 RegionMiddle = getWithinField(RegionVector + MiddleShift);
+                    double distance = Vector2.DistanceSquared(RegionMiddle, obstacle.Position);
+                    if (distance < Range)
+                    {
+                        Grid.getRegion(RegionMiddle).AddObstacle(obstacle);
+                    }
+                }
+            }
+
+            Obstacles.Add(obstacle);
+        }
+
+
+
+        public static List<Vector2> CalculateRenderPosition(Vector2 position)
+        {
+            Vector2 shift = new Vector2(ScreenLeft % Mapsize, ScreenTop % Mapsize);
+
+            List<Vector2> returnVectors = new List<Vector2>();
+
+
+            int MaxX = (int)(ScreenWidth / Mapsize) + 1;
+            int MaxY = (int)(ScreenHeight / Mapsize) + 1;
+
+            for (int x = -1; x <= MaxX; x++)
+            {
+                for (int y = -1; y <= MaxY; y++)
+                {
+                    Vector2 vector = new Vector2(position.X + Mapsize * x, position.Y + Mapsize * y);
+                    vector -= shift;
+                    returnVectors.Add(vector);
+                }
+            }
+
+            return returnVectors;
         }
 
         public void AddFlockVehicle(Vector2 position)
@@ -138,6 +195,16 @@ namespace AAIFinalAssignment
             if (state.IsKeyDown(Keys.Escape))
                 Exit();
 
+            if (state.IsKeyDown(Keys.Up))
+                ScreenTop -= Settings.ScrollSpeed;
+            if (state.IsKeyDown(Keys.Down))
+                ScreenTop += Settings.ScrollSpeed;
+            if (state.IsKeyDown(Keys.Left))
+                ScreenLeft -= Settings.ScrollSpeed;
+            if (state.IsKeyDown(Keys.Right))
+                ScreenLeft += Settings.ScrollSpeed;
+            TopLeftScreen = getWithinField(TopLeftScreen);
+
             if (state.IsKeyDown(Keys.LeftAlt) && !LockedKeys.Contains(Keys.LeftAlt))
             {
                 LockedKeys.Add(Keys.LeftAlt);
@@ -168,6 +235,9 @@ namespace AAIFinalAssignment
 
             _spriteBatch.Begin();
             // TODO: Add your drawing code here
+
+            Grid.Render(gameTime, _spriteBatch);
+
             foreach (Vehicle vehicle in vehicles)
             {
                 vehicle.Render(gameTime, _spriteBatch);
@@ -179,6 +249,7 @@ namespace AAIFinalAssignment
             target.Render(gameTime, _spriteBatch);
 
             Console.Render(gameTime, _spriteBatch);
+
             _spriteBatch.End();
 
             base.Draw(gameTime);
@@ -191,9 +262,9 @@ namespace AAIFinalAssignment
 
             range = Math.Pow(range, 2);
 
-            foreach(MovingEntity entity in vehicles)
+            foreach (MovingEntity entity in vehicles)
             {
-                if(entity != center)
+                if (entity != center)
                 {
                     if (range > Vector2.DistanceSquared(entity.GetClosestCoords(center.Position), center.Position))
                     {
@@ -205,21 +276,56 @@ namespace AAIFinalAssignment
             return inRange;
         }
 
-        public static List<Obstacle> GetObstaclesInRange(double range, Vector2 center)
+        public static List<Obstacle> GetObstaclesInRange(Vector2 center)
         {
-            List<Obstacle> inRange = new List<Obstacle>();
+            center = getWithinField(center);
+            return Grid.getRegion(center).Obstacles;
+        }
 
-            range = Math.Pow(range, 2);
-
-            foreach (Obstacle obstacle in Obstacles)
+        public static Vector2 getWithinField(Vector2 position)
+        {
+            if (position.X > MaxCoords)
             {
-                if (range > Vector2.DistanceSquared(obstacle.GetClosestCoords(center), center))
+                position = new Vector2(position.X - Mapsize, position.Y);
+            }
+            if (position.Y > MaxCoords)
+            {
+                position = new Vector2(position.X, position.Y - Mapsize);
+            }
+            if (position.X < MinCoords)
+            {
+                position = new Vector2(position.X + Mapsize, position.Y);
+            }
+            if (position.Y < MinCoords)
+            {
+                position = new Vector2(position.X, position.Y + Mapsize);
+            }
+            return position;
+        }
+
+        public static Vector2 GetClosestCoords(Vector2 me, Vector2 other)
+        {
+            float smallestDistance = Vector2.DistanceSquared(me, other);
+            Vector2 closest = other;
+
+
+            int[] x = new int[] { 1, 0, -1, -1, -1, 0, 1, 1 };
+            int[] y = new int[] { 1, 1, 1, 0, -1, -1, -1, 0 };
+
+            for (int i = 0; i < 8; i++)
+            {
+                Vector2 current = other;
+                current.X += Game1.Mapsize * x[i];
+                current.Y += Game1.Mapsize * y[i];
+
+                float distance = Vector2.DistanceSquared(current, me);
+                if (distance < smallestDistance)
                 {
-                    inRange.Add(obstacle);
+                    smallestDistance = distance;
+                    closest = current;
                 }
             }
-
-            return inRange;
+            return closest;
         }
 
     }

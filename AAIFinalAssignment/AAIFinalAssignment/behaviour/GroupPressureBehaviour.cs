@@ -33,10 +33,10 @@ namespace AAIFinalAssignment.behaviour
 
         }
 
-        public override void Render(GameTime gameTime, SpriteBatch _spriteBatch)
+        public override void Render(GameTime gameTime, SpriteBatch _spriteBatch, Vector2 Position)
         {
             if (Settings.RenderGroupPressure)
-                BehaviourUtil.RenderVector(_spriteBatch, CurrentVector, ownEntity.Position, 20, Color.White);
+                BehaviourUtil.RenderVector(_spriteBatch, CurrentVector, Position, 20, Color.White);
         }
 
         protected override bool CheckIfShouldDisable()

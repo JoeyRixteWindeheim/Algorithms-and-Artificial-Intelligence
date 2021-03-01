@@ -10,7 +10,7 @@ namespace AAIFinalAssignment.behaviour
     {
 
         public static Texture2D texture;
-        public static Dictionary<int, Texture2D> Circles = new Dictionary<int, Texture2D>();
+        public static Texture2D Circle;
 
         public static Vector2 CalculateSeekVector(Vector2 start, Vector2 target)
         {
@@ -79,11 +79,12 @@ namespace AAIFinalAssignment.behaviour
 
 
 
-        public static Texture2D getCircleTexture(SpriteBatch _spriteBatch,int radius)
+        public static Texture2D getCircleTexture(SpriteBatch _spriteBatch)
         {
-            if (Circles.ContainsKey(radius))
-                return Circles[radius];
-
+            
+            if (Circle != null)
+                return Circle;
+            int radius = 500;
             Texture2D texture = new Texture2D(_spriteBatch.GraphicsDevice, radius, radius);
             Color[] colorData = new Color[radius * radius];
 
@@ -109,7 +110,7 @@ namespace AAIFinalAssignment.behaviour
 
             texture.SetData(colorData);
 
-            Circles.Add(radius, texture);
+            Circle = texture;
             return texture;
         }
 
@@ -119,6 +120,12 @@ namespace AAIFinalAssignment.behaviour
             Rectangle rectangle = new Rectangle(0, 0, (int)(vector.LengthSquared()* multiplier), 1);
             _spriteBatch.Draw(getTexture(_spriteBatch), position, rectangle, color, GetRotation(vector), Vector2.Zero, 1, SpriteEffects.None, 0);
         }
+        public static void RenderVectorPrecise(SpriteBatch _spriteBatch, Vector2 vector, Vector2 position, int length, Color color)
+        {
+
+            Rectangle rectangle = new Rectangle(0, 0, length, 2);
+            _spriteBatch.Draw(getTexture(_spriteBatch), position, rectangle, color, GetRotation(vector), Vector2.Zero, 1, SpriteEffects.None, 0);
+        }
 
         public static void RenderPoint(SpriteBatch _spriteBatch,Vector2 position,Color color)
         {
@@ -126,10 +133,10 @@ namespace AAIFinalAssignment.behaviour
             _spriteBatch.Draw(getTexture(_spriteBatch), rectangle, color);
         }
 
-        public static void RenderCircle(SpriteBatch _spriteBatch, Vector2 position, int range, Color color)
+        public static void RenderCircle(SpriteBatch _spriteBatch, Vector2 position, int radius, Color color)
         {
-            Rectangle rectangle = new Rectangle((int)position.X-range/2, (int)position.Y-range/2, range, range);
-            _spriteBatch.Draw(getCircleTexture(_spriteBatch,range), rectangle, color);
+            Rectangle rectangle = new Rectangle((int)position.X-radius, (int)position.Y-radius, radius*2, radius*2);
+            _spriteBatch.Draw(getCircleTexture(_spriteBatch), rectangle, color);
         }
     }
 }

@@ -27,7 +27,7 @@ namespace AAIFinalAssignment.behaviour
 
         public abstract Vector2 CalculateResultingVector();
 
-        public abstract void Render(GameTime gameTime, SpriteBatch _spriteBatch);
+        public abstract void Render(GameTime gameTime, SpriteBatch _spriteBatch,Vector2 Position);
 
         //public abstract Vector2 CalculateUrgencyVector(Vector2 currentBehaviour);
         

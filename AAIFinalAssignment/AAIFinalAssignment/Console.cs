@@ -149,14 +149,8 @@ namespace AAIFinalAssignment
         private void SetVariable(string[] inputarray)
         {
             var variable = Game1.settings.GetType().GetProperty(inputarray[0]);
-            if (variable == null)
-            {
-                Popup(5, "variable is incorrect");
-                return;
-            }
 
             var type = variable.PropertyType;
-
 
             if (type == typeof(bool))
             {

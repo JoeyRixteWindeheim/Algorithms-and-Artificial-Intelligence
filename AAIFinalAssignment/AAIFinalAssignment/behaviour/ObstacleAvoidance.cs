@@ -3,13 +3,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AAIFinalAssignment.behaviour
 {
     class ObstacleAvoidance : SteeringBehaviour
     {
-        
+
         public ObstacleAvoidance(MovingEntity ownEntity) : base(ownEntity)
         {
 
@@ -29,35 +28,38 @@ namespace AAIFinalAssignment.behaviour
             feeler2 = Vector2.Normalize(ownEntity.velocity);
             feeler2 *= 70;
 
-            feeler1 = BehaviourUtil.RotateVector(feeler2, -Math.PI/6);
+            feeler1 = BehaviourUtil.RotateVector(feeler2, -Math.PI / 6);
             feeler3 = BehaviourUtil.RotateVector(feeler2, Math.PI / 6);
-
-            feeler1 += ownEntity.Position;
-            feeler2 += ownEntity.Position;
-            feeler3 += ownEntity.Position;
         }
 
         private void CheckFeelers()
         {
-            List<Obstacle> obstacles = Game1.GetObstaclesInRange(100, feeler2);
+            HashSet<Obstacle> obstacles = new HashSet<Obstacle>();
+            obstacles.UnionWith(Game1.GetObstaclesInRange(feeler1));
+            obstacles.UnionWith(Game1.GetObstaclesInRange(feeler2));
+            obstacles.UnionWith(Game1.GetObstaclesInRange(feeler3));
+
             feeler1hit = feeler2hit = feeler3hit = false;
-            foreach(Obstacle obstacle in obstacles)
+            foreach (Obstacle obstacle in obstacles)
             {
-                if (obstacle.DoIHit(feeler1))
+                if (obstacle.DoIHit(feeler1 + ownEntity.Position))
                     feeler1hit = true;
-                if (obstacle.DoIHit(feeler2))
+                if (obstacle.DoIHit(feeler2 + ownEntity.Position))
                     feeler2hit = true;
-                if (obstacle.DoIHit(feeler3))
+                if (obstacle.DoIHit(feeler3 + ownEntity.Position))
                     feeler3hit = true;
             }
         }
 
         public override Vector2 CalculateResultingVector()
         {
+            if (ownEntity.velocity == Vector2.Zero)
+                return Vector2.Zero;
             SetFeelers();
             CheckFeelers();
 
-            if(!(feeler1hit || feeler2hit || feeler3hit)){
+            if (!(feeler1hit || feeler2hit || feeler3hit))
+            {
                 resultingVector = Vector2.Zero;
                 return resultingVector;
             }
@@ -73,7 +75,7 @@ namespace AAIFinalAssignment.behaviour
             if (feeler1hit)
             {
                 vector = BehaviourUtil.RotateVector(vector, Math.PI / 2);
-            } 
+            }
             else
             {
                 vector = BehaviourUtil.RotateVector(vector, -Math.PI / 2);
@@ -82,26 +84,26 @@ namespace AAIFinalAssignment.behaviour
             vector *= strength;
             resultingVector = vector;
             return vector;
-            
+
         }
 
-        public override void Render(GameTime gameTime, SpriteBatch _spriteBatch)
+        public override void Render(GameTime gameTime, SpriteBatch _spriteBatch, Vector2 Position)
         {
-            BehaviourUtil.RenderVector(_spriteBatch, resultingVector, ownEntity.Position, 1, Color.Red);
+            BehaviourUtil.RenderVector(_spriteBatch, resultingVector, Position, 1, Color.Red);
 
 
-            if(feeler1hit)
-                BehaviourUtil.RenderPoint(_spriteBatch, feeler1, Color.Red);
+            if (feeler1hit)
+                BehaviourUtil.RenderPoint(_spriteBatch, feeler1 + Position, Color.Red);
             else
-                BehaviourUtil.RenderPoint(_spriteBatch, feeler1, Color.Green);
+                BehaviourUtil.RenderPoint(_spriteBatch, feeler1 + Position, Color.Green);
             if (feeler2hit)
-                BehaviourUtil.RenderPoint(_spriteBatch, feeler2, Color.Red);
+                BehaviourUtil.RenderPoint(_spriteBatch, feeler2 + Position, Color.Red);
             else
-                BehaviourUtil.RenderPoint(_spriteBatch, feeler2, Color.Green);
+                BehaviourUtil.RenderPoint(_spriteBatch, feeler2 + Position, Color.Green);
             if (feeler3hit)
-                BehaviourUtil.RenderPoint(_spriteBatch, feeler3, Color.Red);
+                BehaviourUtil.RenderPoint(_spriteBatch, feeler3 + Position, Color.Red);
             else
-                BehaviourUtil.RenderPoint(_spriteBatch, feeler3, Color.Green);
+                BehaviourUtil.RenderPoint(_spriteBatch, feeler3 + Position, Color.Green);
         }
 
         protected override bool CheckIfShouldDisable()

@@ -33,23 +33,8 @@ namespace AAIFinalAssignment.entity
 
         public Vector2 GetClosestCoords(Vector2 me)
         {
-            float smallestDistance = Vector2.DistanceSquared(me,Position);
-            Vector2 closest = Position;
 
-            for(int i = 0; i <= 3; i+=2)
-            {
-                Vector2 current = Position;
-                current.X += Game1.Mapsize * x[i];
-                current.Y += Game1.Mapsize * y[i];
-
-                float distance = Vector2.DistanceSquared(current, me);
-                if (distance < smallestDistance)
-                {
-                    smallestDistance = distance;
-                    closest = current;
-                }
-            }
-            return closest;
+            return (Game1.GetClosestCoords(me, Position));
         }
 
 
