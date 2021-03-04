@@ -13,7 +13,6 @@ namespace AAIFinalAssignment.Pathfinding
         {
             return PathfindingUtils.Run(location, targets, GetDistance);
         }
-
         private static float GetDistance(Vector2 start, Vector2 current, Vector2 end)
         {
             return Vector2.DistanceSquared(start, Game1.GetClosestCoords(start, current));

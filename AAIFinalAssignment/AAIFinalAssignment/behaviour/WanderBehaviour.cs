@@ -28,12 +28,11 @@ namespace AAIFinalAssignment.behaviour
             }
             lastupdate = DateTime.Now;
             wanderVector = ownEntity.velocity;
-            Random random = new Random(DateTime.Now.Millisecond+DateTime.Now.Second);
 
             if (wanderVector == Vector2.Zero)
             {
-                wanderVector.X = ((float)random.Next(-100, 100))+0.05f;
-                wanderVector.Y = ((float)random.Next(-100, 100))+0.01f;
+                wanderVector.X = ((float)Game1.Random.Next(-100, 100))+0.05f;
+                wanderVector.Y = ((float)Game1.Random.Next(-100, 100))+0.01f;
             }
 
 
@@ -43,8 +42,8 @@ namespace AAIFinalAssignment.behaviour
 
             CurrentVector = new Vector2(0,0);
 
-            CurrentVector.X += random.Next(-100, 100);
-            CurrentVector.Y += random.Next(-100, 100);
+            CurrentVector.X += Game1.Random.Next(-100, 100);
+            CurrentVector.Y += Game1.Random.Next(-100, 100);
 
             CurrentVector.Normalize();
 

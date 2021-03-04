@@ -15,9 +15,14 @@ namespace AAIFinalAssignment
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        public static List<Vehicle> vehicles = new List<Vehicle>();
+        public static SpriteSheet FishSprites;
+        public static SpriteSheet SharkSprites;
+
+        public static Random Random;
+
+        public static List<MovingEntity> MovingEntities = new List<MovingEntity>();
         public static List<Obstacle> Obstacles = new List<Obstacle>();
-        private Vehicle target = new Vehicle(new Vector2(20, 20));
+        private Target target = new Target();
         private ClickHandler clickHandler = new ClickHandler();
 
         public const int MinCoords = 0;
@@ -46,6 +51,8 @@ namespace AAIFinalAssignment
 
         public Game1()
         {
+
+            Random = new Random((int)(DateTime.Now.Ticks));
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -54,36 +61,16 @@ namespace AAIFinalAssignment
 
             Console = new Console();
             LockedKeys = new List<Keys>();
+            AddShark(Vector2.Zero);
 
-            for (int x = 0; x < 2; x++)
+            for (int x = 0; x < 5; x++)
             {
-                for (int y = 0; y < 1; y++)
+                for (int y = 0; y < 5; y++)
                 {
-                    AddFlockVehicle(new Vector2(500 + x * 100, 250 + y * 100));
+                    AddFlockFish(new Vector2(500 + x * 100, 250 + y * 100));
+                    //AddShark(new Vector2(500 + x * 100, 250 + y * 100));
                 }
             }
-
-            /*
-            for (int x = 1; x < 6; x++)
-            {
-                for (int y = 1; y < 6; y++)
-                {
-                    Obstacle obstacle = new Obstacle();
-                    obstacle.Position = new Vector2(200*x, 200*y);
-                    obstacle.Radius = 30;
-                    Obstacles.Add(obstacle);
-                }
-            }
-            for (int x = 10; x < 20; x++)
-            {
-                Obstacle obstacle = new Obstacle();
-                obstacle.Position = new Vector2(30 * x, 500);
-                obstacle.Radius = 30;
-                Obstacles.Add(obstacle);
-            }
-            */
-
-
         }
 
         public static void AddObstacle(Obstacle obstacle)
@@ -137,16 +124,23 @@ namespace AAIFinalAssignment
             return returnVectors;
         }
 
-        public void AddFlockVehicle(Vector2 position)
+        public void AddFlockFish(Vector2 position)
         {
-            Vehicle vehicle = new Vehicle(position);
+            Fish fish = new Fish(position);
             //vehicle.steeringBehaviours.Add(new SeekBehaviour(target, vehicle));
             //vehicle.steeringBehaviours.Add(new FleeBehaviour(target, vehicle));
-            vehicle.steeringBehaviours.Add(new WanderBehaviour(vehicle));
-            vehicle.steeringBehaviours.Add(new DistancingBehaviour(vehicle));
-            vehicle.steeringBehaviours.Add(new GroupPressureBehaviour(vehicle));
-            vehicle.steeringBehaviours.Add(new ObstacleAvoidance(vehicle));
-            vehicles.Add(vehicle);
+            fish.steeringBehaviours.Add(new WanderBehaviour(fish));
+            fish.steeringBehaviours.Add(new DistancingBehaviour(fish));
+            fish.steeringBehaviours.Add(new GroupPressureBehaviour(fish));
+            //vehicle.steeringBehaviours.Add(new ObstacleAvoidance(vehicle));
+            MovingEntities.Add(fish);
+        }
+
+        public void AddShark(Vector2 position)
+        {
+            Shark shark = new Shark(position);
+            shark.steeringBehaviours.Add(new WanderBehaviour(shark));
+            MovingEntities.Add(shark);
         }
 
         protected override void Initialize()
@@ -160,13 +154,9 @@ namespace AAIFinalAssignment
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             spriteFont = Content.Load<SpriteFont>("Ariel");
+            FishSprites = new SpriteSheet(Content.Load<Texture2D>("fishSprites"),48);
+            SharkSprites = new SpriteSheet(Content.Load<Texture2D>("SharkSprites"), 96);
 
-
-            foreach (Vehicle vehicle in vehicles)
-            {
-                vehicle.LoadContent(Content);
-            }
-            target.LoadContent(Content);
         }
 
         protected override void Update(GameTime gameTime)
@@ -175,7 +165,7 @@ namespace AAIFinalAssignment
 
 
             // TODO: Add your update logic here
-            foreach (Vehicle vehicle in vehicles)
+            foreach (MovingEntity vehicle in MovingEntities)
             {
                 vehicle.Update(gameTime);
             }
@@ -238,7 +228,7 @@ namespace AAIFinalAssignment
 
             Grid.Render(gameTime, _spriteBatch);
 
-            foreach (Vehicle vehicle in vehicles)
+            foreach (MovingEntity vehicle in MovingEntities)
             {
                 vehicle.Render(gameTime, _spriteBatch);
             }
@@ -262,7 +252,7 @@ namespace AAIFinalAssignment
 
             range = Math.Pow(range, 2);
 
-            foreach (MovingEntity entity in vehicles)
+            foreach (MovingEntity entity in MovingEntities)
             {
                 if (entity != center)
                 {

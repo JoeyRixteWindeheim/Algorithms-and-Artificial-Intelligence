@@ -27,11 +27,15 @@ namespace AAIFinalAssignment
 
             var temp = Game1.settings.GetType().GetProperties();
             for (int i = 0; i < temp.Length; i++)
+            {
                 variables.Add(temp[i].Name);
+            }
 
             var temp2 = ConsoleFunctions.GetType().GetMethods();
             for (int i = 0; i < temp2.Length; i++)
-                functions.Add( temp2[i].Name);
+            {
+                functions.Add(temp2[i].Name);
+            }
         }
 
         public void HandleKeys(Keys[] PressedKeys)
@@ -89,11 +93,17 @@ namespace AAIFinalAssignment
             string[] inputarray = input.Split(' ');
 
             if (variables.Contains(inputarray[0]))
+            {
                 SetVariable(inputarray);
+            }
             else if (functions.Contains(inputarray[0]))
+            {
                 ExecuteFunction(inputarray);
+            }
             else
+            {
                 Popup(5, "Unknown command");
+            }
         }
 
         private void ExecuteFunction(string[] values)

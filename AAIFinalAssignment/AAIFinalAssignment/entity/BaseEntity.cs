@@ -23,7 +23,6 @@ namespace AAIFinalAssignment.entity
             }
         }
 
-        public abstract void LoadContent(Microsoft.Xna.Framework.Content.ContentManager Content);
         public abstract void Update(GameTime gameTime);
         public abstract void Render(GameTime gameTime, SpriteBatch _spriteBatch);
 

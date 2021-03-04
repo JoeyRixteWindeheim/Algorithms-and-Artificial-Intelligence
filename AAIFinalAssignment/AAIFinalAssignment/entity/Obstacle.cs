@@ -15,10 +15,6 @@ namespace AAIFinalAssignment.entity
 
         public int Radius { get; set; }
 
-        public override void LoadContent(ContentManager Content)
-        {
-            
-        }
 
         public override void Render(GameTime gameTime, SpriteBatch _spriteBatch)
         {
