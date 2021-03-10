@@ -8,7 +8,7 @@ using AAIFinalAssignment.behaviour;
 
 namespace AAIFinalAssignment.entity
 {
-    public class Vehicle : MovingEntity
+    public class Vehicle : MovingEntityWithoutStates
     {
         public override Vector2 velocity { get; set; }
         public override double mass { get; set; }
@@ -18,6 +18,7 @@ namespace AAIFinalAssignment.entity
         public double drag = 0.99;
         public override Vector2 Position { get; set; }
         public override Texture2D Texture { get; set; }
+        
 
         
 

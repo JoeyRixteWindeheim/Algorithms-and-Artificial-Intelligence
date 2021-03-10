@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using AAIFinalAssignment.statemachine.states;
 
 namespace AAIFinalAssignment
 {
@@ -15,6 +16,8 @@ namespace AAIFinalAssignment
         private SpriteBatch _spriteBatch;
 
         private List<Vehicle> vehicles = new List<Vehicle>();
+        private List<VehicleWithStates> vehiclesWithStates = new List<VehicleWithStates>();
+
         private Vehicle target = new Vehicle(10,0,new Vector2(20,20));
         private ClickHandler clickHandler = new ClickHandler();
 
@@ -56,11 +59,17 @@ namespace AAIFinalAssignment
 
         public void AddFlockVehicle(Vector2 position)
         {
-            Vehicle vehicle = new Vehicle(50, 200, position);
+            //Vehicle vehicle = new Vehicle(50, 200, position);
+
             //vehicle.steeringBehaviours.Add(new AtractBehaviour(this, 100, vehicle));
-            vehicle.steeringBehaviours.Add(new SeekBehaviour(target, vehicle));
-            vehicle.steeringBehaviours.Add(new FlockingBehaviour(this, 100, vehicle));
-            vehicles.Add(vehicle);
+            //vehicle.steeringBehaviours.Add(new SeekBehaviour(target, vehicle));
+            //vehicle.steeringBehaviours.Add(new FlockingBehaviour(this, 100, vehicle));
+            // vehicles.Add(vehicle);
+
+            VehicleWithStates vehicle = new VehicleWithStates(50, 200, position, target, this);
+            vehicle.StateMachine.SetState(new FindFoodState(vehicle.StateMachine));
+            vehiclesWithStates.Add(vehicle);
+            
         }
 
         protected override void Initialize()
@@ -79,6 +88,13 @@ namespace AAIFinalAssignment
             {
                 vehicle.LoadContent(Content);
             }
+
+            foreach (VehicleWithStates vehicle in vehiclesWithStates)
+            {
+                vehicle.LoadContent(Content);
+            }
+
+
             target.LoadContent(Content);
         }
 
@@ -89,6 +105,11 @@ namespace AAIFinalAssignment
 
             // TODO: Add your update logic here
             foreach (Vehicle vehicle in vehicles)
+            {
+                vehicle.Update(gameTime);
+            }
+
+            foreach (VehicleWithStates vehicle in vehiclesWithStates)
             {
                 vehicle.Update(gameTime);
             }
@@ -112,6 +133,11 @@ namespace AAIFinalAssignment
             {
                 vehicle.Render(gameTime, _spriteBatch);
             }
+
+            foreach (VehicleWithStates vehicle in vehiclesWithStates)
+            {
+                vehicle.Render(gameTime, _spriteBatch);
+            }
             target.Render(gameTime, _spriteBatch);
             _spriteBatch.End();
 
@@ -128,6 +154,17 @@ namespace AAIFinalAssignment
             foreach(BaseEntity entity in vehicles)
             {
                 if(entity != center)
+                {
+                    if (range > Vector2.DistanceSquared(entity.Position, center.Position))
+                    {
+                        inRange.Add(entity);
+                    }
+                }
+            }
+
+            foreach (BaseEntity entity in vehiclesWithStates)
+            {
+                if (entity != center)
                 {
                     if (range > Vector2.DistanceSquared(entity.Position, center.Position))
                     {
