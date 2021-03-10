@@ -21,7 +21,7 @@ namespace AAIFinalAssignment.behaviour
 
         public override Vector2 CalculateResultingVector()
         {
-            return Currentvector = BehaviourUtil.CalculateSeekVector(ownEntity.Position, Target.Position);
+            return Currentvector = BehaviourUtil.CalculateSeekVector(ownEntity.Position, Target.GetClosestCoords(ownEntity.Position));
         }
 
         // TODO: Implement
@@ -35,10 +35,10 @@ namespace AAIFinalAssignment.behaviour
             throw new NotImplementedException();
         }
 
-        public override void Render(GameTime gameTime, SpriteBatch _spriteBatch)
+        public override void Render(GameTime gameTime, SpriteBatch _spriteBatch,Vector2 Position)
         {
-            if(Game1.RenderSeeking)
-                BehaviourUtil.RenderVector(_spriteBatch, Currentvector, ownEntity.Position,20, Color.White);
+            if(Settings.RenderSeeking)
+                BehaviourUtil.RenderVector(_spriteBatch, Currentvector, Position,20, Color.White);
         }
     }
 }

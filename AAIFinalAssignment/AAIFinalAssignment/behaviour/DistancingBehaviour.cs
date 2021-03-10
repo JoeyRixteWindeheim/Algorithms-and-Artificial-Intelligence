@@ -7,35 +7,29 @@ using System.Text;
 
 namespace AAIFinalAssignment.behaviour
 {
-    public class FlockingBehaviour : SteeringBehaviour
+    public class DistancingBehaviour : SteeringBehaviour
     {
-        public double Range { get; set; }
-        public Game1 Game { get; set; }
 
         public List<Vector2> targets { get; set; }
 
         public Vector2 currentVector { get; set; }
-        public FlockingBehaviour(Game1 game,double range, MovingEntity ownEntity) : base(ownEntity)
+        public DistancingBehaviour(MovingEntity ownEntity) : base(ownEntity)
         {
-            Range = range;
-            Game = game;
         }
         public override Vector2 CalculateResultingVector()
         {
-            var entities = Game.GetEntitiesInRange(Range, ownEntity);
+            var entities = Game1.GetMovingEntitiesInRange(Settings.DistancingRange, ownEntity);
 
             currentVector = new Vector2();
             targets = new List<Vector2>();
 
             foreach(BaseEntity entity in entities)
             {
-
-                Vector2 target = Vector2.Subtract(ownEntity.Position, entity.Position);
+                Vector2 target = Vector2.Subtract(ownEntity.Position, entity.GetClosestCoords(ownEntity.Position));
                 target = Vector2.Normalize(target);
-                target *= (float)Range/2;
-                target = Vector2.Add(target,entity.Position);
+                target *= (float)Settings.DistancingRange / 2;
                 targets.Add(target);
-                currentVector += BehaviourUtil.CalculateSeekVector(ownEntity.Position, target);
+                currentVector += BehaviourUtil.CalculateSeekVector(ownEntity.Position, Vector2.Add(target, entity.Position));
             }
             return currentVector;
         }
@@ -50,14 +44,14 @@ namespace AAIFinalAssignment.behaviour
             throw new NotImplementedException();
         }
 
-        public override void Render(GameTime gameTime, SpriteBatch _spriteBatch)
+        public override void Render(GameTime gameTime, SpriteBatch _spriteBatch,Vector2 Position)
         {
-            if (Game1.RenderRepel)
+            if (Settings.RenderDistancing)
             {
-                BehaviourUtil.RenderVector(_spriteBatch, currentVector, ownEntity.Position, 20, Color.Blue);
+                BehaviourUtil.RenderVector(_spriteBatch, currentVector, Position, 20, Color.Blue);
                 foreach(Vector2 target in targets)
                 {
-                    BehaviourUtil.RenderPoint(_spriteBatch, target, Color.Yellow);
+                    BehaviourUtil.RenderPoint(_spriteBatch, Vector2.Add(target, Position), Color.Yellow);
                 }
             }
                 

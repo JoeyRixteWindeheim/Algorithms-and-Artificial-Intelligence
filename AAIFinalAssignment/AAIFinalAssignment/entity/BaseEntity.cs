@@ -23,9 +23,19 @@ namespace AAIFinalAssignment.entity
             }
         }
 
-        public abstract void LoadContent(Microsoft.Xna.Framework.Content.ContentManager Content);
         public abstract void Update(GameTime gameTime);
         public abstract void Render(GameTime gameTime, SpriteBatch _spriteBatch);
+
+
+        int[] x = { 0, 0, -1, 1 };
+        int[] y = { -1, 1, 0, 0 };
+
+        public Vector2 GetClosestCoords(Vector2 me)
+        {
+
+            return (Game1.GetClosestCoords(me, Position));
+        }
+
 
 
     }

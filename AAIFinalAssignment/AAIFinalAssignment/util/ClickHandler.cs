@@ -21,7 +21,7 @@ namespace AAIFinalAssignment.util
 
         public Vector2 GetMousePosition()
         {
-            return new Vector2(mouseState.Position.X, mouseState.Position.Y);
+            return Game1.getWithinField( new Vector2(mouseState.Position.X+Game1.ScreenLeft, mouseState.Position.Y+Game1.ScreenTop));
         }
     }
 }

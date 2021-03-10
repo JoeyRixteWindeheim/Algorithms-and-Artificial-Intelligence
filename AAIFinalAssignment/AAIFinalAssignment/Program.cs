@@ -8,7 +8,11 @@ namespace AAIFinalAssignment
         static void Main()
         {
             using (var game = new Game1())
+            {
+
+                game.Window.AllowUserResizing = true;
                 game.Run();
+            }
         }
     }
 }
