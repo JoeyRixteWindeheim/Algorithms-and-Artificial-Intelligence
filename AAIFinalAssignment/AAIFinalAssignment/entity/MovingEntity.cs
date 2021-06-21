@@ -12,6 +12,9 @@ namespace AAIFinalAssignment.entity
     {
         public abstract Vector2 velocity { get; set; }
 
+<<<<<<< HEAD
+        
+=======
         public List<SteeringBehaviour> steeringBehaviours = new List<SteeringBehaviour>();
 
         public override void Update(GameTime gameTime)
@@ -89,5 +92,6 @@ namespace AAIFinalAssignment.entity
 
             }
         }
+>>>>>>> 63c802434a527f84c42fba632961f6e9fa7b4d09
     }
 }
