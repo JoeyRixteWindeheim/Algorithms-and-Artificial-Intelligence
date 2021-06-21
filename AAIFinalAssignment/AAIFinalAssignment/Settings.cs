@@ -28,5 +28,9 @@ namespace AAIFinalAssignment
         public static float ScrollSpeed { get; set; } = 10;
 
         public static bool RenderObstacles { get; set; } = false;
+
+        public static float SharkEatingRange { get; set; } = 20;
+
+        public static float FishEatingRange { get; set; } = 10;
     }
 }

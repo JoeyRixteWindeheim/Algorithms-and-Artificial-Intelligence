@@ -21,6 +21,7 @@ namespace AAIFinalAssignment.entity
             this.Position = Position;
             AnimationOfset = (float)Game1.Random.NextDouble()*2;
             TextureNumber = Game1.Random.Next(1, 8);
+            PotencialFood = Game1.FishFood;
         }
 
         public override void Render(GameTime gameTime, SpriteBatch _spriteBatch)
@@ -30,13 +31,11 @@ namespace AAIFinalAssignment.entity
                 
                 Game1.FishSprites.RenderFish((float)gameTime.TotalGameTime.TotalSeconds + AnimationOfset, _spriteBatch, velocity, position, TextureNumber);
                  
-                
-                
-
                 if (Settings.RenderBehaviour)
                 {
                     foreach (SteeringBehaviour behaviour in steeringBehaviours)
                     {
+                        behaviour.Render(gameTime, _spriteBatch);
                         behaviour.Render(gameTime, _spriteBatch, position);
                     }
                     BehaviourUtil.RenderVector(_spriteBatch, velocity, position, 0.01, Color.Red);
@@ -44,6 +43,9 @@ namespace AAIFinalAssignment.entity
 
             }
         }
-
+        public override float GetEatingRange()
+        {
+            return Settings.FishEatingRange;
+        }
     }
 }
