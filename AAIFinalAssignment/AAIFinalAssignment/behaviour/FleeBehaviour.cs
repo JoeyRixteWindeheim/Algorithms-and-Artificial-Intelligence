@@ -32,7 +32,7 @@ namespace AAIFinalAssignment.behaviour
             throw new NotImplementedException();
         }
 
-        public override void Render(GameTime gameTime, SpriteBatch _spriteBatch,Vector2 Position)
+        public override void Render(GameTime gameTime, SpriteBatch _spriteBatch)
         {
            
         }

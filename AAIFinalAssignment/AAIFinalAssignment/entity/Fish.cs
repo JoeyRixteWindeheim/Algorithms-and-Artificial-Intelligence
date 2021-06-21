@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace AAIFinalAssignment.entity
 {
-    public class Fish : MovingEntity
+    public class Fish : MovingEntityWithStates
     {
         public override Vector2 velocity { get; set; }
         public override Vector2 Position { get; set; }

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace AAIFinalAssignment.entity
 {
-    public class Shark : MovingEntity
+    public class Shark : MovingEntityWithStates
     {
         public override Vector2 velocity { get; set; }
         public override Vector2 Position { get; set; }
@@ -44,6 +44,11 @@ namespace AAIFinalAssignment.entity
                 }
 
             }
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            throw new NotImplementedException();
         }
     }
 }

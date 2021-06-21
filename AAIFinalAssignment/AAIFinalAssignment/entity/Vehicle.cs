@@ -11,8 +11,8 @@ namespace AAIFinalAssignment.entity
     public class Vehicle : MovingEntityWithoutStates
     {
         public override Vector2 velocity { get; set; }
-        public override double mass { get; set; }
-        public override double maxSpeed { get; set; }
+        public double mass { get; set; }
+        public double maxSpeed { get; set; }
         public double minSpeed = 0;
         public double maxAccel = 1;
         public double drag = 0.99;
@@ -29,7 +29,7 @@ namespace AAIFinalAssignment.entity
             this.Position = Position;
         }
 
-        public override void LoadContent(Microsoft.Xna.Framework.Content.ContentManager Content)
+        public void LoadContent(Microsoft.Xna.Framework.Content.ContentManager Content)
         {
             Texture = Content.Load<Texture2D>("circle");
         }
