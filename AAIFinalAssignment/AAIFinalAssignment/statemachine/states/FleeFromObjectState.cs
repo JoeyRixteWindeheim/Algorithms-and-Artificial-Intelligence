@@ -8,17 +8,12 @@ using Microsoft.Xna.Framework;
 
 namespace AAIFinalAssignment.statemachine.states
 {
-    public class FleeFromObjectState : VehicleState
+    public class FleeFromObjectState : EntityState
     {
 
-        public FleeFromObjectState(VehicleFiniteStateMachine ownerFiniteStateMachine, BaseEntity targetToFleeFrom) : base(ownerFiniteStateMachine)
+        public FleeFromObjectState(EntityStateMachine ownerFiniteStateMachine, BaseEntity targetToFleeFrom) : base(ownerFiniteStateMachine)
         {
-            steeringBehaviours.Add(new FleeBehaviour(targetToFleeFrom, ownerFiniteStateMachine.OwnerVehicle));
-        }
-
-        public override void OnStateUpdate(GameTime gameTime)
-        {
-            throw new NotImplementedException();
+            steeringBehaviours.Add(new FleeBehaviour(targetToFleeFrom, ownerFiniteStateMachine.OwnerEntity));
         }
     }
 }

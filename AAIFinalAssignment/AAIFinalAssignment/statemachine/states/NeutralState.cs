@@ -8,13 +8,13 @@ using Microsoft.Xna.Framework;
 
 namespace AAIFinalAssignment.statemachine.states
 {
-    class NeutralState : VehicleState
+    class NeutralState : EntityState
     {
-        public NeutralState(VehicleFiniteStateMachine ownerFiniteStateMachine) : base(ownerFiniteStateMachine)
+        public NeutralState(EntityStateMachine ownerFiniteStateMachine) : base(ownerFiniteStateMachine)
         {
-            steeringBehaviours.Add(new SeekBehaviour(OwnerVehicle.SeekTarget, OwnerVehicle));
-            steeringBehaviours.Add(new DistancingBehaviour(OwnerVehicle));
-            steeringBehaviours.Add(new GroupPressureBehaviour(OwnerVehicle));
+            steeringBehaviours.Add(new WanderBehaviour(OwnerEntity));
+            steeringBehaviours.Add(new DistancingBehaviour(OwnerEntity));
+            steeringBehaviours.Add(new GroupPressureBehaviour(OwnerEntity));
         }
 
     }

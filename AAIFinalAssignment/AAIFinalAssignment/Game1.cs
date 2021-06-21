@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using AAIFinalAssignment.statemachine.states;
 
@@ -66,7 +67,7 @@ namespace AAIFinalAssignment
 
             Console = new Console();
             LockedKeys = new List<Keys>();
-            AddShark(Vector2.Zero);
+            //AddShark(Vector2.Zero);
 
             for (int x = 0; x < 5; x++)
             {
@@ -125,14 +126,13 @@ namespace AAIFinalAssignment
                     returnVectors.Add(vector);
                 }
             }
-
             return returnVectors;
         }
 
         public void AddFlockFish(Vector2 position)
         {
             Fish fish = new Fish(position);
-            fish.steeringBehaviours.Add(new WanderBehaviour(fish));
+            //fish.steeringBehaviours.Add(new WanderBehaviour(fish));
             //vehicle.steeringBehaviours.Add(new SeekBehaviour(target, vehicle));
             //vehicle.steeringBehaviours.Add(new FleeBehaviour(target, vehicle));
             //vehicle.steeringBehaviours.Add(new ObstacleAvoidance(vehicle));
@@ -305,6 +305,7 @@ namespace AAIFinalAssignment
 
         public static Vector2 getWithinField(Vector2 position)
         {
+            
             if (position.X > MaxCoords)
             {
                 position = new Vector2(position.X - Mapsize, position.Y);

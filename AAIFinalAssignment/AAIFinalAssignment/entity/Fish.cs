@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace AAIFinalAssignment.entity
@@ -25,6 +26,8 @@ namespace AAIFinalAssignment.entity
 
         public override void Render(GameTime gameTime, SpriteBatch _spriteBatch)
         {
+            
+            List<Vector2> randomVecList = Game1.CalculateRenderPosition(Position);
             foreach (Vector2 position in Game1.CalculateRenderPosition(Position))
             {
                 

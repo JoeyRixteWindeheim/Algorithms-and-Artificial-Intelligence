@@ -8,24 +8,29 @@ namespace AAIFinalAssignment.statemachine
 {
     public class FiniteStateMachine
     {
-        State startingState;
-        State previousState;
-        State currentState;
-       
+        private State startingState;
+        private State previousState;
+        private State currentState;
+
+        // Recursive state machines
+        protected FiniteStateMachine parentStateMachine;
+        protected List<FiniteStateMachine> childStateMachines = new List<FiniteStateMachine>();
+
+
 
         public virtual void Start()
         {
-            if (startingState != null)
+            if (StartingState != null)
             {
-                SetState(startingState);
+                SetState(StartingState);
             }
         }
 
         public virtual void Update(GameTime gameTime)
         {
-            if (currentState != null)
+            if (CurrentState != null)
             {
-                currentState.OnStateUpdate(gameTime);
+                CurrentState.OnStateUpdate(gameTime);
             }
         }
 
@@ -37,19 +42,23 @@ namespace AAIFinalAssignment.statemachine
             {
                 // used in backing up 
                 State BackupPreviousState = previousState;
-                previousState = currentState;
-                currentState = nextState;
-                ExecutionState stateStatus = currentState.OnStateEnter();
+                previousState = CurrentState;
+                CurrentState = nextState;
+                ExecutionState stateStatus = CurrentState.OnStateEnter();
                 
                 // Make sure the state can be entered. If not, rollback to before the state changed
                 if (stateStatus == ExecutionState.TERMINATED)
                 {
-                    currentState = previousState;
+                    CurrentState = previousState;
                     previousState = BackupPreviousState;
-                    currentState.OnStateEnter();
+                    CurrentState.OnStateEnter();
                 }
             }
         }
         #endregion
+
+        protected State StartingState { get => startingState; set => startingState = value; }
+        protected State PreviousState { get => previousState; set => previousState = value; }
+        protected State CurrentState { get => currentState; set => currentState = value; }
     }
 }

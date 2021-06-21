@@ -15,7 +15,7 @@ namespace AAIFinalAssignment
         public static int GroupPressureRange { get; set; } = 120;
         public static bool RenderWander { get; set; } = true;
 
-        public static bool RenderRegions { get; set; } = true;
+        public static bool RenderRegions { get; set; } = false;
 
         public static int MaxSpeed { get; set; } = 200;
         public static int MinSpeed { get; set; } = 0;

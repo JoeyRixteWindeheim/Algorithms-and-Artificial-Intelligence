@@ -12,10 +12,16 @@ namespace AAIFinalAssignment.entity
     {
         public abstract Vector2 velocity { get; set; }
 
+        public BaseEntity SeekTarget { get; set; }
 
         public List<SteeringBehaviour> steeringBehaviours = new List<SteeringBehaviour>();
 
         public override void Update(GameTime gameTime)
+        {
+            UpdateMovement(gameTime);
+        }
+
+        public virtual void UpdateMovement(GameTime gameTime)
         {
             if (steeringBehaviours.Count != 0)
             {
@@ -76,18 +82,11 @@ namespace AAIFinalAssignment.entity
                             return;
                         }
                     }
-                    
 
                     Position = NewPosition;
 
                     Position = Game1.getWithinField(Position);
                 }
-
-
-
-
-
-
             }
         }
     }
