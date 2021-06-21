@@ -18,7 +18,7 @@ namespace AAIFinalAssignment.Pathfinding
         {
             Region StartRegion = Game1.Grid.getRegion(location);
 
-            SortedRegionList sortedRegionList = new SortedRegionList();
+            PriorityQueue sortedRegionList = new PriorityQueue();
 
             RouteTree routeTree = new RouteTree();
             routeTree.AddFirst(StartRegion);

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AAIFinalAssignment.Pathfinding
 {
-    public class SortedRegionList
+    public class PriorityQueueDumb
     {
 
         private SortedRegionListNode Top;

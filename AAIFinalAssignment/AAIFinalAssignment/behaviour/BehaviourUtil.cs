@@ -40,9 +40,6 @@ namespace AAIFinalAssignment.behaviour
             // So, there's no point in moving
 
             return resultingVector;
-
-
-
         }
 
         public static Single GetRotation(Vector2 vector)

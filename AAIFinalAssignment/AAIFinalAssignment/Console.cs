@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace AAIFinalAssignment
 {
@@ -25,16 +26,16 @@ namespace AAIFinalAssignment
             variables = new HashSet<string>();
             functions = new HashSet<string>();
 
-            var temp = Game1.settings.GetType().GetProperties();
-            for (int i = 0; i < temp.Length; i++)
+            PropertyInfo[] Properties = Game1.settings.GetType().GetProperties();
+            for (int i = 0; i < Properties.Length; i++)
             {
-                variables.Add(temp[i].Name);
+                variables.Add(Properties[i].Name);
             }
 
-            var temp2 = ConsoleFunctions.GetType().GetMethods();
-            for (int i = 0; i < temp2.Length; i++)
+            MethodInfo[] Methods = ConsoleFunctions.GetType().GetMethods();
+            for (int i = 0; i < Methods.Length; i++)
             {
-                functions.Add(temp2[i].Name);
+                functions.Add(Methods[i].Name);
             }
         }
 
