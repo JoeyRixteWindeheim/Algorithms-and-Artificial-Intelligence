@@ -8,9 +8,9 @@ using Microsoft.Xna.Framework;
 
 namespace AAIFinalAssignment.statemachine.states
 {
-    class FindFoodState : VehicleState
+    class NeutralState : VehicleState
     {
-        public FindFoodState(VehicleFiniteStateMachine ownerFiniteStateMachine) : base(ownerFiniteStateMachine)
+        public NeutralState(VehicleFiniteStateMachine ownerFiniteStateMachine) : base(ownerFiniteStateMachine)
         {
             steeringBehaviours.Add(new SeekBehaviour(OwnerVehicle.SeekTarget, OwnerVehicle));
             steeringBehaviours.Add(new DistancingBehaviour(OwnerVehicle));

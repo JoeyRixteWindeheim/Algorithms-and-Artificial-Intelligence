@@ -46,9 +46,9 @@ namespace AAIFinalAssignment.entity
             }
         }
 
-        public override void Update(GameTime gameTime)
+/*        public override void Update(GameTime gameTime)
         {
-            throw new NotImplementedException();
-        }
+            //throw new NotImplementedException();
+        }*/
     }
 }

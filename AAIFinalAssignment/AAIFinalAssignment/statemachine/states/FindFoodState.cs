@@ -13,7 +13,8 @@ namespace AAIFinalAssignment.statemachine.states
         public FindFoodState(VehicleFiniteStateMachine ownerFiniteStateMachine) : base(ownerFiniteStateMachine)
         {
             steeringBehaviours.Add(new SeekBehaviour(OwnerVehicle.SeekTarget, OwnerVehicle));
-            steeringBehaviours.Add(new FlockingBehaviour(OwnerVehicle.RunningGame, 100, OwnerVehicle));
+            steeringBehaviours.Add(new DistancingBehaviour(OwnerVehicle));
+            steeringBehaviours.Add(new GroupPressureBehaviour(OwnerVehicle));
         }
 
     }

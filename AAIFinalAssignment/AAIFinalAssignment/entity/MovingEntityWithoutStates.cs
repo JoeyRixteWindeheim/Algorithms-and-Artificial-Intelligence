@@ -7,6 +7,5 @@ namespace AAIFinalAssignment.entity
 {
     public abstract class MovingEntityWithoutStates : MovingEntity
     {
-        public List<SteeringBehaviour> steeringBehaviours = new List<SteeringBehaviour>();
     }
 }
