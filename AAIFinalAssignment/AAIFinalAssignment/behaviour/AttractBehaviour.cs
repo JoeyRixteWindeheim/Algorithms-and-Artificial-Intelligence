@@ -18,7 +18,7 @@ namespace AAIFinalAssignment.behaviour
         }
         public override Vector2 CalculateResultingVector()
         {
-            var entities = Game.GetEntitiesInRange(Range, ownEntity);
+            var entities = Game1.GetMovingEntitiesInRange(Range, ownEntity);
 
             currentVector = new Vector2();
             //get vector for every entity
@@ -43,7 +43,7 @@ namespace AAIFinalAssignment.behaviour
 
         public override void Render(GameTime gameTime, SpriteBatch _spriteBatch)
         {
-            if(Game1.RenderAtract)
+            if(Settings.renderAttractForce)
                 BehaviourUtil.RenderVector(_spriteBatch, currentVector, ownEntity.Position, 20, Color.White);
         }
     }

@@ -22,6 +22,9 @@ namespace AAIFinalAssignment
         public static float MaxAccel { get; set; } = 1;
         public static float Drag { get; set; } = 0.99f;
 
+        // Rendering forces
+        public static bool renderAttractForce = false;
+
         public static float ScrollSpeed { get; set; } = 10;
 
         public static bool RenderObstacles { get; set; } = false;

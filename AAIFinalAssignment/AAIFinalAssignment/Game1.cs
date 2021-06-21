@@ -16,12 +16,9 @@ namespace AAIFinalAssignment
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-<<<<<<< HEAD
         private List<Vehicle> vehicles = new List<Vehicle>();
         private List<VehicleWithStates> vehiclesWithStates = new List<VehicleWithStates>();
 
-        private Vehicle target = new Vehicle(10,0,new Vector2(20,20));
-=======
         public static SpriteSheet FishSprites;
         public static SpriteSheet SharkSprites;
 
@@ -30,7 +27,7 @@ namespace AAIFinalAssignment
         public static List<MovingEntity> MovingEntities = new List<MovingEntity>();
         public static List<Obstacle> Obstacles = new List<Obstacle>();
         private Target target = new Target();
->>>>>>> 63c802434a527f84c42fba632961f6e9fa7b4d09
+
         private ClickHandler clickHandler = new ClickHandler();
 
         public const int MinCoords = 0;
@@ -111,19 +108,6 @@ namespace AAIFinalAssignment
 
         public static List<Vector2> CalculateRenderPosition(Vector2 position)
         {
-<<<<<<< HEAD
-            //Vehicle vehicle = new Vehicle(50, 200, position);
-
-            //vehicle.steeringBehaviours.Add(new AtractBehaviour(this, 100, vehicle));
-            //vehicle.steeringBehaviours.Add(new SeekBehaviour(target, vehicle));
-            //vehicle.steeringBehaviours.Add(new FlockingBehaviour(this, 100, vehicle));
-            // vehicles.Add(vehicle);
-
-            VehicleWithStates vehicle = new VehicleWithStates(50, 200, position, target, this);
-            vehicle.StateMachine.SetState(new FindFoodState(vehicle.StateMachine));
-            vehiclesWithStates.Add(vehicle);
-            
-=======
             Vector2 shift = new Vector2(ScreenLeft % Mapsize, ScreenTop % Mapsize);
 
             List<Vector2> returnVectors = new List<Vector2>();
@@ -150,10 +134,12 @@ namespace AAIFinalAssignment
             Fish fish = new Fish(position);
             //vehicle.steeringBehaviours.Add(new SeekBehaviour(target, vehicle));
             //vehicle.steeringBehaviours.Add(new FleeBehaviour(target, vehicle));
-            fish.steeringBehaviours.Add(new WanderBehaviour(fish));
-            fish.steeringBehaviours.Add(new DistancingBehaviour(fish));
-            fish.steeringBehaviours.Add(new GroupPressureBehaviour(fish));
             //vehicle.steeringBehaviours.Add(new ObstacleAvoidance(vehicle));
+
+/*            fish.steeringBehaviours.Add(new WanderBehaviour(fish));
+            fish.steeringBehaviours.Add(new DistancingBehaviour(fish));
+            fish.steeringBehaviours.Add(new GroupPressureBehaviour(fish));*/
+
             MovingEntities.Add(fish);
         }
 
@@ -162,7 +148,6 @@ namespace AAIFinalAssignment
             Shark shark = new Shark(position);
             shark.steeringBehaviours.Add(new WanderBehaviour(shark));
             MovingEntities.Add(shark);
->>>>>>> 63c802434a527f84c42fba632961f6e9fa7b4d09
         }
 
         protected override void Initialize()
@@ -179,22 +164,6 @@ namespace AAIFinalAssignment
             FishSprites = new SpriteSheet(Content.Load<Texture2D>("fishSprites"),48);
             SharkSprites = new SpriteSheet(Content.Load<Texture2D>("SharkSprites"), 96);
 
-<<<<<<< HEAD
-            
-            foreach (Vehicle vehicle in vehicles)
-            {
-                vehicle.LoadContent(Content);
-            }
-
-            foreach (VehicleWithStates vehicle in vehiclesWithStates)
-            {
-                vehicle.LoadContent(Content);
-            }
-
-
-            target.LoadContent(Content);
-=======
->>>>>>> 63c802434a527f84c42fba632961f6e9fa7b4d09
         }
 
         protected override void Update(GameTime gameTime)
@@ -275,17 +244,17 @@ namespace AAIFinalAssignment
             {
                 vehicle.Render(gameTime, _spriteBatch);
             }
-<<<<<<< HEAD
 
             foreach (VehicleWithStates vehicle in vehiclesWithStates)
             {
                 vehicle.Render(gameTime, _spriteBatch);
-=======
+            }
+
             foreach (Obstacle obstacle in Obstacles)
             {
                 obstacle.Render(gameTime, _spriteBatch);
->>>>>>> 63c802434a527f84c42fba632961f6e9fa7b4d09
             }
+
             target.Render(gameTime, _spriteBatch);
 
             Console.Render(gameTime, _spriteBatch);
@@ -313,7 +282,7 @@ namespace AAIFinalAssignment
                 }
             }
 
-            foreach (BaseEntity entity in vehiclesWithStates)
+/*            foreach (BaseEntity entity in vehiclesWithStates)
             {
                 if (entity != center)
                 {
@@ -322,7 +291,7 @@ namespace AAIFinalAssignment
                         inRange.Add(entity);
                     }
                 }
-            }
+            }*/
 
             return inRange;
         }

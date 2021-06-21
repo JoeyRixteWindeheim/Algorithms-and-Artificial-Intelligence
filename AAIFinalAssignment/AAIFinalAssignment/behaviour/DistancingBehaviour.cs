@@ -56,5 +56,10 @@ namespace AAIFinalAssignment.behaviour
             }
                 
         }
+
+        public override void Render(GameTime gameTime, SpriteBatch _spriteBatch)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
