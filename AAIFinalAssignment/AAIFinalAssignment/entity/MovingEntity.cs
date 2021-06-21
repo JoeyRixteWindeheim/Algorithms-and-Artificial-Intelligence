@@ -16,6 +16,14 @@ namespace AAIFinalAssignment.entity
 
         public List<SteeringBehaviour> steeringBehaviours = new List<SteeringBehaviour>();
 
+
+        public List<BaseEntity> PotencialFood;
+        
+        public virtual float GetEatingRange()
+        {
+            return 0;
+        }
+
         public override void Update(GameTime gameTime)
         {
             UpdateMovement(gameTime);
@@ -86,6 +94,17 @@ namespace AAIFinalAssignment.entity
                     Position = NewPosition;
 
                     Position = Game1.getWithinField(Position);
+                }
+            }
+            if (PotencialFood != null)
+            {
+                foreach (BaseEntity food in PotencialFood)
+                {
+                    if (Vector2.DistanceSquared(food.Position, Position) < GetEatingRange() * GetEatingRange())
+                    {
+                        Game1.RemoveEntity(food);
+                        break;
+                    }
                 }
             }
         }

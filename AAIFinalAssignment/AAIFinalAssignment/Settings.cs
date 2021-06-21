@@ -17,6 +17,8 @@ namespace AAIFinalAssignment
 
         public static bool RenderRegions { get; set; } = false;
 
+        public static float WaypointSwitchDistance { get; set; } = 15;
+
         public static int MaxSpeed { get; set; } = 200;
         public static int MinSpeed { get; set; } = 0;
         public static float MaxAccel { get; set; } = 1;
@@ -28,5 +30,9 @@ namespace AAIFinalAssignment
         public static float ScrollSpeed { get; set; } = 10;
 
         public static bool RenderObstacles { get; set; } = false;
+
+        public static float SharkEatingRange { get; set; } = 20;
+
+        public static float FishEatingRange { get; set; } = 10;
     }
 }
