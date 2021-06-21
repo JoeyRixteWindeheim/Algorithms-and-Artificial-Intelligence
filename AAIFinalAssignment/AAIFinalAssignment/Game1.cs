@@ -26,7 +26,11 @@ namespace AAIFinalAssignment
 
         public static List<MovingEntity> MovingEntities = new List<MovingEntity>();
         public static List<Obstacle> Obstacles = new List<Obstacle>();
-        private Target target = new Target();
+
+        public static List<BaseEntity> FishFood = new List<BaseEntity>();
+        public static List<BaseEntity> SharkFood = new List<BaseEntity>();
+        public static List<BaseEntity> RemovalList = new List<BaseEntity>();
+        //private Target target = new Target();
 
         private ClickHandler clickHandler = new ClickHandler();
 
@@ -66,7 +70,7 @@ namespace AAIFinalAssignment
 
             Console = new Console();
             LockedKeys = new List<Keys>();
-            AddShark(Vector2.Zero);
+            //AddShark(Vector2.Zero);
 
             for (int x = 0; x < 5; x++)
             {
@@ -142,6 +146,7 @@ namespace AAIFinalAssignment
             fish.steeringBehaviours.Add(new GroupPressureBehaviour(fish));*/
 
             MovingEntities.Add(fish);
+            SharkFood.Add(fish);
         }
 
         public void AddShark(Vector2 position)
@@ -149,6 +154,26 @@ namespace AAIFinalAssignment
             Shark shark = new Shark(position);
             shark.steeringBehaviours.Add(new WanderBehaviour(shark));
             MovingEntities.Add(shark);
+        }
+
+        public static void RemoveEntity(BaseEntity entity)
+        {
+            RemovalList.Add(entity);
+            
+        }
+
+        public void RemoveEntities()
+        {
+            foreach(BaseEntity entity in RemovalList)
+            {
+                FishFood.Remove(entity);
+                SharkFood.Remove(entity);
+                if (entity is MovingEntity)
+                {
+                    MovingEntities.Remove((MovingEntity)entity);
+                }
+            }
+            RemovalList.Clear();
         }
 
         protected override void Initialize()
@@ -186,9 +211,10 @@ namespace AAIFinalAssignment
             // Move target to click
             if (clickHandler.CheckMouseClicked() == true)
             {
-                target.Position = clickHandler.GetMousePosition();
+                FishFood fishFood = new FishFood(clickHandler.GetMousePosition());
+                FishFood.Add(fishFood);
             }
-
+            RemoveEntities();
             base.Update(gameTime);
         }
 
@@ -256,7 +282,12 @@ namespace AAIFinalAssignment
                 obstacle.Render(gameTime, _spriteBatch);
             }
 
-            target.Render(gameTime, _spriteBatch);
+            foreach (BaseEntity food in FishFood)
+            {
+                food.Render(gameTime, _spriteBatch);
+            }
+
+            //target.Render(gameTime, _spriteBatch);
 
             Console.Render(gameTime, _spriteBatch);
 
