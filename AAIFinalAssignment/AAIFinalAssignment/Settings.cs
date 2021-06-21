@@ -17,6 +17,8 @@ namespace AAIFinalAssignment
 
         public static bool RenderRegions { get; set; } = true;
 
+        public static float WaypointSwitchDistance { get; set; } = 15;
+
         public static int MaxSpeed { get; set; } = 200;
         public static int MinSpeed { get; set; } = 0;
         public static float MaxAccel { get; set; } = 1;

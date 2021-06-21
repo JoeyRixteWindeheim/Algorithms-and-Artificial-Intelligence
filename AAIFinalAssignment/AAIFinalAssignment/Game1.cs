@@ -132,8 +132,8 @@ namespace AAIFinalAssignment
         public void AddFlockFish(Vector2 position)
         {
             Fish fish = new Fish(position);
-            fish.steeringBehaviours.Add(new WanderBehaviour(fish));
-            //vehicle.steeringBehaviours.Add(new SeekBehaviour(target, vehicle));
+            //fish.steeringBehaviours.Add(new WanderBehaviour(fish));
+            fish.steeringBehaviours.Add(new SeekBehaviour(target, fish));
             //vehicle.steeringBehaviours.Add(new FleeBehaviour(target, vehicle));
             //vehicle.steeringBehaviours.Add(new ObstacleAvoidance(vehicle));
 
