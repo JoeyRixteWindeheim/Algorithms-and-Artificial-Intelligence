@@ -6,6 +6,7 @@ using AAIFinalAssignment.behaviour;
 using AAIFinalAssignment.entity;
 using AAIFinalAssignment.statemachine;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace AAIFinalAssignment.statemachine
 {
@@ -71,6 +72,17 @@ namespace AAIFinalAssignment.statemachine
                     OwnerEntity.Position = Vector2.Add(OwnerEntity.Position, OwnerEntity.velocity * (float)gameTime.ElapsedGameTime.TotalSeconds);
                     OwnerEntity.Position = Game1.getWithinField(OwnerEntity.Position);
                 }
+            }
+        }
+
+        public void RenderBehaviour(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position)
+        {
+            if (!Settings.RenderBehaviour)
+                return;
+
+            foreach(SteeringBehaviour behaviour in steeringBehaviours)
+            {
+                behaviour.Render(gameTime, spriteBatch, position);
             }
         }
     }

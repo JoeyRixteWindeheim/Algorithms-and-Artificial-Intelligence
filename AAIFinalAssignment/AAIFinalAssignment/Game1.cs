@@ -71,7 +71,7 @@ namespace AAIFinalAssignment
 
             Console = new Console();
             LockedKeys = new List<Keys>();
-            //AddShark(Vector2.Zero);
+            AddShark(Vector2.Zero);
 
             for (int x = 0; x < 5; x++)
             {

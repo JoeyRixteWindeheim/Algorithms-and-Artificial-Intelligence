@@ -33,16 +33,7 @@ namespace AAIFinalAssignment.entity
             {
                 
                 Game1.FishSprites.RenderFish((float)gameTime.TotalGameTime.TotalSeconds + AnimationOfset, _spriteBatch, velocity, position, TextureNumber);
-                 
-                if (Settings.RenderBehaviour)
-                {
-                    foreach (SteeringBehaviour behaviour in steeringBehaviours)
-                    {
-                        behaviour.Render(gameTime, _spriteBatch);
-                        behaviour.Render(gameTime, _spriteBatch, position);
-                    }
-                    BehaviourUtil.RenderVector(_spriteBatch, velocity, position, 0.01, Color.Red);
-                }
+                BehaviourStateMachine.Render(gameTime, _spriteBatch, position);
 
             }
         }
