@@ -62,15 +62,5 @@ namespace AAIFinalAssignment.behaviour
             }
                 
         }
-
-        protected override bool CheckIfShouldDisable()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override bool CheckIfShouldEnable()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

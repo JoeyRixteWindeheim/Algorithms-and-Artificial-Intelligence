@@ -31,16 +31,6 @@ namespace AAIFinalAssignment.behaviour
             return currentVector;
         }
 
-        protected override bool CheckIfShouldDisable()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override bool CheckIfShouldEnable()
-        {
-            throw new NotImplementedException();
-        }
-
         public override void Render(GameTime gameTime, SpriteBatch _spriteBatch)
         {
             if(Settings.renderAttractForce)

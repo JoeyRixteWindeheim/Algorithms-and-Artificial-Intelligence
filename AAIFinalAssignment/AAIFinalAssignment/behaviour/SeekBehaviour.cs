@@ -32,9 +32,9 @@ namespace AAIFinalAssignment.behaviour
             GenerateWaypoints();
         }
 
-        public void GenerateWaypoints()
+        private void GenerateWaypoints()
         {
-            Waypoints = AStar.Run(ownEntity.Position, target.Position);
+            Waypoints = AStar.Run(ownEntity.Position, Target.Position);
             currentWaypoint = 0;
         }
 
@@ -58,17 +58,6 @@ namespace AAIFinalAssignment.behaviour
                 return Currentvector = BehaviourUtil.CalculateSeekVector(ownEntity.Position, Game1.GetClosestCoords(ownEntity.Position, Waypoints[currentWaypoint]));
             }
             return Currentvector = BehaviourUtil.CalculateSeekVector(ownEntity.Position, Game1.GetClosestCoords(ownEntity.Position, Target.Position));
-        }
-
-        // TODO: Implement
-        protected override bool CheckIfShouldEnable()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override bool CheckIfShouldDisable()
-        {
-            throw new NotImplementedException();
         }
 
         public override void Render(GameTime gameTime, SpriteBatch _spriteBatch,Vector2 Position)
