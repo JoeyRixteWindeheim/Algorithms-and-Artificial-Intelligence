@@ -17,10 +17,23 @@ namespace AAIFinalAssignment.behaviour
         private Vector2[] Waypoints;
         private int currentWaypoint;
 
+        private bool UpdateAstar;
+
         public SeekBehaviour(BaseEntity target, MovingEntity ownEntity) : base(ownEntity)
         {
-            Target = target;
+            NewTarget(target);
             urgency = 1;
+        }
+
+        public void NewTarget(BaseEntity target)
+        {
+            UpdateAstar = target is MovingEntity;
+            Target = target;
+            GenerateWaypoints();
+        }
+
+        public void GenerateWaypoints()
+        {
             Waypoints = AStar.Run(ownEntity.Position, target.Position);
             currentWaypoint = 0;
         }
@@ -37,6 +50,10 @@ namespace AAIFinalAssignment.behaviour
         {
             if(currentWaypoint < Waypoints.Length -1)
             {
+                if(UpdateAstar && Vector2.DistanceSquared(Target.Position, Target.GetClosestCoords(Waypoints[Waypoints.Length-1]) ) > Game1.Grid.RegionSize * Game1.Grid.RegionSize)
+                {
+                    GenerateWaypoints();
+                }
                 UpdateWaypoint();
                 return Currentvector = BehaviourUtil.CalculateSeekVector(ownEntity.Position, Game1.GetClosestCoords(ownEntity.Position, Waypoints[currentWaypoint]));
             }
