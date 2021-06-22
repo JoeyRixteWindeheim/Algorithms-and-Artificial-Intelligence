@@ -12,7 +12,23 @@ namespace AAIFinalAssignment.entity
     {
         public abstract Vector2 velocity { get; set; }
 
-        public BaseEntity SeekTarget { get; set; }
+        public BaseEntity SeekTarget { 
+            get 
+            {
+                BaseEntity food = null;
+                float distance = float.MaxValue;
+                foreach(BaseEntity entity in PotencialFood)
+                {
+                    float currentDistance = Vector2.DistanceSquared(Game1.GetClosestCoords(entity.Position,Position) , entity.Position);
+                    if(currentDistance < distance)
+                    {
+                        distance = currentDistance;
+                        food = entity;
+                    }
+                }
+                return food;
+            } 
+        }
 
         public List<SteeringBehaviour> steeringBehaviours = new List<SteeringBehaviour>();
 
