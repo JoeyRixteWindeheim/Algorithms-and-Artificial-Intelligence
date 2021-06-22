@@ -41,15 +41,5 @@ namespace AAIFinalAssignment.behaviour
             if (Settings.RenderGroupPressure)
                 BehaviourUtil.RenderVector(_spriteBatch, CurrentVector, Position, 1, Color.White);
         }
-
-        protected override bool CheckIfShouldDisable()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override bool CheckIfShouldEnable()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

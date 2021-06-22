@@ -105,15 +105,5 @@ namespace AAIFinalAssignment.behaviour
             else
                 BehaviourUtil.RenderPoint(_spriteBatch, feeler3 + Position, Color.Green);
         }
-
-        protected override bool CheckIfShouldDisable()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override bool CheckIfShouldEnable()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
