@@ -25,11 +25,14 @@ namespace AAIFinalAssignment.behaviour
 
             foreach(BaseEntity entity in entities)
             {
-                Vector2 target = Vector2.Subtract(ownEntity.Position, entity.GetClosestCoords(ownEntity.Position));
-                target = Vector2.Normalize(target);
-                target *= (float)Settings.DistancingRange / 2;
-                targets.Add(target);
-                currentVector += BehaviourUtil.CalculateSeekVector(ownEntity.Position, Vector2.Add(target, entity.Position));
+                if(ownEntity.GetType() == entity.GetType())
+                {
+                    Vector2 target = Vector2.Subtract(ownEntity.Position, entity.GetClosestCoords(ownEntity.Position));
+                    target = Vector2.Normalize(target);
+                    target *= (float)Settings.DistancingRange / 2;
+                    targets.Add(target);
+                    currentVector += BehaviourUtil.CalculateSeekVector(ownEntity.Position, Vector2.Add(target, entity.Position));
+                }
             }
             return currentVector;
         }
@@ -51,7 +54,7 @@ namespace AAIFinalAssignment.behaviour
                 BehaviourUtil.RenderVector(_spriteBatch, currentVector, Position, 20, Color.Blue);
                 foreach(Vector2 target in targets)
                 {
-                    BehaviourUtil.RenderPoint(_spriteBatch, Vector2.Add(target, Position), Color.Yellow);
+                    BehaviourUtil.RenderPoint(_spriteBatch, Vector2.Subtract(Position, target), Color.Yellow);
                 }
             }
                 
@@ -59,7 +62,6 @@ namespace AAIFinalAssignment.behaviour
 
         public override void Render(GameTime gameTime, SpriteBatch _spriteBatch)
         {
-            throw new NotImplementedException();
         }
     }
 }

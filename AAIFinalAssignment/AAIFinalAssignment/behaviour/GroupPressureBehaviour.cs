@@ -23,7 +23,10 @@ namespace AAIFinalAssignment.behaviour
             CurrentVector = new Vector2();
             foreach (MovingEntity entity in entities)
             {
-                CurrentVector += Vector2.Normalize( entity.velocity);
+                if(ownEntity.GetType() == entity.GetType())
+                {
+                    CurrentVector += Vector2.Normalize(entity.velocity);
+                }
             }
             if (float.IsNaN(CurrentVector.X) || CurrentVector == Vector2.Zero)
                 return Vector2.Zero;
@@ -36,7 +39,7 @@ namespace AAIFinalAssignment.behaviour
         public override void Render(GameTime gameTime, SpriteBatch _spriteBatch, Vector2 Position)
         {
             if (Settings.RenderGroupPressure)
-                BehaviourUtil.RenderVector(_spriteBatch, CurrentVector, Position, 20, Color.White);
+                BehaviourUtil.RenderVector(_spriteBatch, CurrentVector, Position, 1, Color.White);
         }
 
         protected override bool CheckIfShouldDisable()

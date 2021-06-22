@@ -11,6 +11,7 @@ namespace AAIFinalAssignment.behaviour
     {
 
         public BaseEntity Target { get; set; }
+        public Vector2 Currentvector { get; set; }
         public FleeBehaviour(BaseEntity target, MovingEntity ownEntity) : base(ownEntity)
         {
             Target = target;
@@ -19,7 +20,7 @@ namespace AAIFinalAssignment.behaviour
 
         public override Vector2 CalculateResultingVector()
         {
-            return BehaviourUtil.CalculateSeekVector(ownEntity.Position, Target.GetClosestCoords(ownEntity.Position)) * -1; 
+            return Currentvector = BehaviourUtil.CalculateSeekVector(ownEntity.Position, Target.GetClosestCoords(ownEntity.Position)) * -1; 
         }
 
         protected override bool CheckIfShouldDisable()
@@ -32,9 +33,10 @@ namespace AAIFinalAssignment.behaviour
             throw new NotImplementedException();
         }
 
-        public override void Render(GameTime gameTime, SpriteBatch _spriteBatch)
+        public override void Render(GameTime gameTime, SpriteBatch _spriteBatch, Vector2 position)
         {
-           
+            if (Settings.RenderSeeking)
+                BehaviourUtil.RenderVector(_spriteBatch, Currentvector, position, 20, Color.White);
         }
     }
 }
