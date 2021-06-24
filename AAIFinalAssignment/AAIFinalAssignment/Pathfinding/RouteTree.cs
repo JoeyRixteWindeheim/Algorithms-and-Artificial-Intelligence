@@ -51,7 +51,7 @@ namespace AAIFinalAssignment.Pathfinding
                 node.DistanceToOrigin = distance;
                 node.Parent = parent;
                 node.edge = edge;
-                edge.color = Color.DarkRed;
+                edge.color = Color.Red;
                 tree.Add(region, node);
             }
         }

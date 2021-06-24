@@ -15,7 +15,7 @@ namespace AAIFinalAssignment
         public static int GroupPressureRange { get; set; } = 120;
         public static bool RenderWander { get; set; } = true;
 
-        public static bool RenderRegions { get; set; } = false;
+        public static bool RenderGrid { get; set; } = false;
 
         public static float WaypointSwitchDistance { get; set; } = 15;
 
@@ -29,7 +29,7 @@ namespace AAIFinalAssignment
 
         public static float ScrollSpeed { get; set; } = 10;
 
-        public static bool RenderObstacles { get; set; } = false;
+        public static bool RenderObstacles { get; set; } = true;
 
         public static float SharkEatingRange { get; set; } = 20;
 
