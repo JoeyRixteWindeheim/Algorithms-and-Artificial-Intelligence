@@ -9,12 +9,31 @@ namespace AAIFinalAssignment
 {
     public class ConsoleFunctions
     {
+        public static Random random = new Random();
+
         public static void AddObstacle(int x,int y, int size)
         {
             Obstacle obstacle = new Obstacle();
             obstacle.Position = new Vector2(x, y);
             obstacle.Radius = size / 2;
             Game1.AddObstacle(obstacle);
+        }
+
+        public static void AddObstacle()
+        {
+            Obstacle obstacle = new Obstacle();
+
+            obstacle.Position = new Vector2(random.Next(Game1.MinCoords, Game1.MaxCoords), random.Next(Game1.MinCoords, Game1.MaxCoords));
+            obstacle.Radius = (int)Game1.Grid.RegionSize;
+            Game1.AddObstacle(obstacle);
+        }
+
+        public static void AddObstacles(int amount)
+        {
+            for(int i = 0; i< amount; i++)
+            {
+                AddObstacle();
+            }
         }
 
         public static void RunDijkstra(int x1,int y1,int x2, int y2)

@@ -10,8 +10,8 @@ namespace AAIFinalAssignment.behaviour
     public class FleeBehaviour : SteeringBehaviour
     {
 
-        public BaseEntity Target { get; set; }
-        public Vector2 Currentvector { get; set; }
+        private BaseEntity Target { get; set; }
+        private Vector2 Currentvector { get; set; }
         public FleeBehaviour(BaseEntity target, MovingEntity ownEntity) : base(ownEntity)
         {
             Target = target;

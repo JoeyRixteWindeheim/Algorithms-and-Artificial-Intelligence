@@ -10,7 +10,7 @@ namespace AAIFinalAssignment.Grid
     public class Edge
     {
         public Region[] Conections;
-        public Color color;
+        public Color color { get; set; }
         public bool active;
         public int Length;
         private Vector2 drawvector;
@@ -27,7 +27,7 @@ namespace AAIFinalAssignment.Grid
 
         public void Render(GameTime gameTime, SpriteBatch _spriteBatch)
         {
-            if (Settings.RenderRegions && active)
+            if (Settings.RenderGrid && active)
             {
                 
 
