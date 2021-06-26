@@ -29,8 +29,6 @@ namespace AAIFinalAssignment
         public static float MaxAccel { get; set; } = 1;
         public static float Drag { get; set; } = 0.99f;
 
-        // Rendering forces
-        public static bool renderAttractForce = false;
 
         public static float ScrollSpeed { get; set; } = 10;
 
@@ -39,5 +37,6 @@ namespace AAIFinalAssignment
         public static float SharkEatingRange { get; set; } = 20;
 
         public static float FishEatingRange { get; set; } = 10;
+        public static bool RenderStates { get; set; } = false;
     }
 }

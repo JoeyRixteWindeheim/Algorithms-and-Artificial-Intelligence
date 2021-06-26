@@ -51,7 +51,7 @@ namespace AAIFinalAssignment.statemachine
         {
             if(CurrentState is EntityState)
             {
-                ((EntityState)CurrentState).RenderBehaviour(gameTime, spriteBatch, position);
+                ((EntityState)CurrentState).Render(gameTime, spriteBatch, position);
             }
         }
 

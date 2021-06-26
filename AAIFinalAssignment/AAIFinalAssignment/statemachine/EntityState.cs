@@ -12,6 +12,7 @@ namespace AAIFinalAssignment.statemachine
 {
     public abstract class EntityState : State
     {
+        public string Name { get; set; }
         EntityStateMachine childStateMachine;
 
         protected EntityStateMachine ownerFiniteStateMachine;
@@ -87,19 +88,44 @@ namespace AAIFinalAssignment.statemachine
                     }
 
 
-                    OwnerEntity.Position = Vector2.Add(OwnerEntity.Position, OwnerEntity.velocity * (float)gameTime.ElapsedGameTime.TotalSeconds);
-                    OwnerEntity.Position = Game1.getWithinField(OwnerEntity.Position);
+                    Vector2 NewPosition = Vector2.Add(OwnerEntity.Position, OwnerEntity.velocity * (float)gameTime.ElapsedGameTime.TotalSeconds);
+                    NewPosition = Game1.getWithinField(NewPosition);
+
+                    foreach (Obstacle obstacle in Game1.GetObstaclesInRange(NewPosition))
+                    {
+                        if (obstacle.DoIHit(NewPosition))
+                        {
+                            OwnerEntity.velocity = Vector2.Zero;
+                            return;
+                        }
+                    }
+
+                    OwnerEntity.Position = NewPosition;
                 }
             }
         }
-        public void RenderBehaviour(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position)
+
+        public void Render(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position)
+        {
+            RenderBehaviours(gameTime, spriteBatch, position);
+            RenderStates(gameTime, spriteBatch, position);
+        }
+
+        public void RenderBehaviours(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position)
         {
             if (!Settings.RenderBehaviour)
                 return;
 
-            foreach(SteeringBehaviour behaviour in steeringBehaviours)
+            foreach (SteeringBehaviour behaviour in steeringBehaviours)
             {
                 behaviour.Render(gameTime, spriteBatch, position);
+            }
+        }
+        public void RenderStates(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position)
+        {
+            if (Settings.RenderStates)
+            {
+                spriteBatch.DrawString(Game1.spriteFont, Name, position, Color.Black);
             }
         }
     }

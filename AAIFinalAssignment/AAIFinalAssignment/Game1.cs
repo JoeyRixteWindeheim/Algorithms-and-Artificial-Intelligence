@@ -67,13 +67,14 @@ namespace AAIFinalAssignment
 
             Console = new Console();
             LockedKeys = new List<Keys>();
+            ConsoleFunctions.AddObstacles();
             AddShark(Vector2.Zero);
 
             for (int x = 0; x < 5; x++)
             {
                 for (int y = 0; y < 5; y++)
                 {
-                    AddFlockFish(new Vector2(500 + x * 100, 250 + y * 100));
+                    AddFlockFish(new Vector2(0 + x * 100, 0 + y * 100));
                 }
             }
         }
