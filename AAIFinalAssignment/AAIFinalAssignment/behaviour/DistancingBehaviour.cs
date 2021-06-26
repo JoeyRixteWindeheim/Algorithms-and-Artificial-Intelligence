@@ -10,9 +10,9 @@ namespace AAIFinalAssignment.behaviour
     public class DistancingBehaviour : SteeringBehaviour
     {
 
-        public List<Vector2> targets { get; set; }
+        private List<Vector2> targets { get; set; }
 
-        public Vector2 currentVector { get; set; }
+        private Vector2 currentVector { get; set; }
         public DistancingBehaviour(MovingEntity ownEntity) : base(ownEntity)
         {
         }

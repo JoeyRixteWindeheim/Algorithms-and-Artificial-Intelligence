@@ -28,7 +28,6 @@ namespace AAIFinalAssignment
         public static List<BaseEntity> FishFood = new List<BaseEntity>();
         public static List<BaseEntity> SharkFood = new List<BaseEntity>();
         public static List<BaseEntity> RemovalList = new List<BaseEntity>();
-        //private Target target = new Target();
 
         private ClickHandler clickHandler = new ClickHandler();
 
@@ -75,7 +74,6 @@ namespace AAIFinalAssignment
                 for (int y = 0; y < 5; y++)
                 {
                     AddFlockFish(new Vector2(500 + x * 100, 250 + y * 100));
-                    //AddShark(new Vector2(500 + x * 100, 250 + y * 100));
                 }
             }
         }
@@ -105,8 +103,6 @@ namespace AAIFinalAssignment
 
             Obstacles.Add(obstacle);
         }
-
-
 
         public static List<Vector2> CalculateRenderPosition(Vector2 position)
         {
@@ -200,8 +196,6 @@ namespace AAIFinalAssignment
             {
                 vehicle.Update(gameTime);
             }
-
-
             // Move target to click
             if (clickHandler.CheckMouseClicked() == true)
             {
@@ -254,10 +248,9 @@ namespace AAIFinalAssignment
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.DarkBlue);
 
             _spriteBatch.Begin();
-            // TODO: Add your drawing code here
 
             Grid.Render(gameTime, _spriteBatch);
 
@@ -275,8 +268,6 @@ namespace AAIFinalAssignment
             {
                 food.Render(gameTime, _spriteBatch);
             }
-
-            //target.Render(gameTime, _spriteBatch);
 
             Console.Render(gameTime, _spriteBatch);
 
@@ -302,17 +293,6 @@ namespace AAIFinalAssignment
                     }
                 }
             }
-
-/*            foreach (BaseEntity entity in vehiclesWithStates)
-            {
-                if (entity != center)
-                {
-                    if (range > Vector2.DistanceSquared(entity.Position, center.Position))
-                    {
-                        inRange.Add(entity);
-                    }
-                }
-            }*/
 
             return inRange;
         }
