@@ -16,6 +16,7 @@ namespace AAIFinalAssignment.statemachine.states
             steeringBehaviours.Add(new SeekBehaviour(OwnerEntity.SeekTarget, OwnerEntity));
             steeringBehaviours.Add(new DistancingBehaviour(OwnerEntity));
             steeringBehaviours.Add(new ObstacleAvoidance(OwnerEntity));
+            Name = "FindFood";
         }
 
     }

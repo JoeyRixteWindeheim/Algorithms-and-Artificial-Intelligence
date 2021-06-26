@@ -28,7 +28,7 @@ namespace AAIFinalAssignment.entity
 
         public bool DoIHit(Vector2 vector)
         {
-            return Vector2.DistanceSquared(vector, Position) < Math.Pow(Radius, 2);
+            return Vector2.DistanceSquared(Game1.getWithinField(vector), Position) < Math.Pow(Radius, 2);
         }
 
         public override void Update(GameTime gameTime)

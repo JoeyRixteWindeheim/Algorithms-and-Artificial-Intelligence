@@ -14,6 +14,7 @@ namespace AAIFinalAssignment.statemachine.states
         public FleeFromObjectState(EntityStateMachine ownerFiniteStateMachine, BaseEntity targetToFleeFrom) : base(ownerFiniteStateMachine)
         {
             steeringBehaviours.Add(new FleeBehaviour(targetToFleeFrom, ownerFiniteStateMachine.OwnerEntity));
+            Name = "Flee";
         }
     }
 }
