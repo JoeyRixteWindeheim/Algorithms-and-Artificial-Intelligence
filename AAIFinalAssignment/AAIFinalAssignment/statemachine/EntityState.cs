@@ -13,6 +13,7 @@ namespace AAIFinalAssignment.statemachine
     public abstract class EntityState : State
     {
         public string Name { get; set; }
+        EntityStateMachine childStateMachine;
 
         internal MovingEntityWithStates OwnerEntity { get; set; }
 
@@ -22,9 +23,24 @@ namespace AAIFinalAssignment.statemachine
         {
             OwnerEntity = ownerFiniteStateMachine.OwnerEntity;
         }
-          
+
+        public override ExecutionState OnStateEnter()
+        {
+            // call OnStateEnter in child state machine
+            if (childStateMachine != null)
+            {
+                childStateMachine.Start();
+            }
+            return base.OnStateEnter();
+        }
+
         public override void OnStateUpdate(GameTime gameTime)
         {
+            // call the update function in the child state machine
+            if (childStateMachine != null)
+            {
+                childStateMachine.Update(gameTime);
+            }
             // Get all current behaviors and calculate the resulting vector from all of those behaviors.
             // Make the vehicle move according to the resulting vector.
             if (steeringBehaviours.Count != 0)

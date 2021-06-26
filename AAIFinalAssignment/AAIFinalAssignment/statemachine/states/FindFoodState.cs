@@ -13,10 +13,11 @@ namespace AAIFinalAssignment.statemachine.states
         public FindFoodState(EntityStateMachine ownerFiniteStateMachine) : base(ownerFiniteStateMachine)
         {
 
-            steeringBehaviours.Add(new SeekBehaviour(OwnerEntity.SeekTarget, OwnerEntity));
+/*            steeringBehaviours.Add(new SeekBehaviour(OwnerEntity.SeekTarget, OwnerEntity));
             steeringBehaviours.Add(new DistancingBehaviour(OwnerEntity));
-            steeringBehaviours.Add(new ObstacleAvoidance(OwnerEntity));
+            steeringBehaviours.Add(new ObstacleAvoidance(OwnerEntity));*/
             Name = "FindFood";
+            
         }
 
     }
