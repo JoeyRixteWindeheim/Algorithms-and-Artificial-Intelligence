@@ -20,7 +20,6 @@ namespace AAIFinalAssignment.statemachine
     {
         public ExecutionState executionState { get; protected set; } = ExecutionState.NONE;
 
-
         public virtual ExecutionState OnStateEnter()
         {
             executionState = ExecutionState.ACTIVE;

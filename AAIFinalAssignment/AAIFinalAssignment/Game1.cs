@@ -196,7 +196,6 @@ namespace AAIFinalAssignment
             {
                 vehicle.Update(gameTime);
             }
-
             // Move target to click
             if (clickHandler.CheckMouseClicked() == true)
             {
