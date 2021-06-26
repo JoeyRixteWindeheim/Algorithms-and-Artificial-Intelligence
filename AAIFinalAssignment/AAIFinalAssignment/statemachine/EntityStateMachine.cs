@@ -6,16 +6,20 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AAIFinalAssignment.FuzzyLogic;
 using AAIFinalAssignment.statemachine.states;
+using System.Threading.Tasks;
 
 namespace AAIFinalAssignment.statemachine
 {
     public class EntityStateMachine : FiniteStateMachine
     {
-
         public MovingEntityWithStates OwnerEntity { get; set; }
+
+
         // Used to keep track of parent state, if it has one.
         // Used in recursive state machines
         protected State parentState;
+
+        private bool lookingForFood;
 
         public EntityStateMachine(MovingEntityWithStates ownerVehicle, State startingState = null, State parentState = null)
         {
@@ -28,7 +32,19 @@ namespace AAIFinalAssignment.statemachine
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            //ThinkIfShouldEat();
+            if (!LookingForFood)
+            {
+                if (Settings.DoHungerStateCalculationThroughFuzzyLogic)
+                {
+                    ThinkIfShouldEat();
+                }
+                else
+                {
+                    // If the hunger isn't set through fuzzy logic, we set a timer for 20-30 seconds. 
+                    // Afterwards, the fish is hungry and wants some food.
+                    ThinkIfShouldEatTimer(this);
+                }
+            }
         }
 
         public void Render(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position)
@@ -37,6 +53,14 @@ namespace AAIFinalAssignment.statemachine
             {
                 ((EntityState)CurrentState).RenderBehaviour(gameTime, spriteBatch, position);
             }
+        }
+
+        static async void ThinkIfShouldEatTimer(EntityStateMachine callingStateMachine)
+        {
+            callingStateMachine.LookingForFood = true;
+            // wait 20 seconds, then set state to hungry
+            await Task.Delay(20000);
+            callingStateMachine.SetState(new FindFoodState(callingStateMachine));
         }
 
         // TODO: Split this up into multiple methods
@@ -122,5 +146,6 @@ namespace AAIFinalAssignment.statemachine
             
 
         }
+        public bool LookingForFood { get => lookingForFood; set => lookingForFood = value; }
     }
 }

@@ -14,12 +14,14 @@ namespace AAIFinalAssignment.statemachine
     {
         EntityStateMachine childStateMachine;
 
+        protected EntityStateMachine ownerFiniteStateMachine;
         internal MovingEntityWithStates OwnerEntity { get; set; }
 
         public List<SteeringBehaviour> steeringBehaviours = new List<SteeringBehaviour>();
 
         public EntityState(EntityStateMachine ownerFiniteStateMachine)
         {
+            this.ownerFiniteStateMachine = ownerFiniteStateMachine;
             OwnerEntity = ownerFiniteStateMachine.OwnerEntity;
         }
 

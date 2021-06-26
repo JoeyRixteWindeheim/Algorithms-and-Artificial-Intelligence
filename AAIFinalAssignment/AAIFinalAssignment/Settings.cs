@@ -6,6 +6,11 @@ namespace AAIFinalAssignment
 {
     public class Settings
     {
+        // Fuzzy Logic
+
+        public static bool DoHungerStateCalculationThroughFuzzyLogic { get; set; } = false;
+
+        // Rendering behaviours
         public static bool RenderBehaviour { get; set; } = false;
         public static bool RenderSeeking { get; set; } = true;
         public static bool RenderDistancing { get; set; } = true;

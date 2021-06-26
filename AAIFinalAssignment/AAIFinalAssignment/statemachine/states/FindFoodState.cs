@@ -10,6 +10,11 @@ namespace AAIFinalAssignment.statemachine.states
 {
     class FindFoodState : EntityState
     {
+        public override ExecutionState OnStateEnter()
+        {
+            ownerFiniteStateMachine.LookingForFood = true;
+            return base.OnStateEnter();
+        }
         public FindFoodState(EntityStateMachine ownerFiniteStateMachine) : base(ownerFiniteStateMachine)
         {
 
@@ -17,6 +22,12 @@ namespace AAIFinalAssignment.statemachine.states
             steeringBehaviours.Add(new DistancingBehaviour(OwnerEntity));
             steeringBehaviours.Add(new ObstacleAvoidance(OwnerEntity));*/
             
+        }
+
+        public override ExecutionState OnStateEnd()
+        {
+            ownerFiniteStateMachine.LookingForFood = false;
+            return base.OnStateEnd();
         }
 
     }
