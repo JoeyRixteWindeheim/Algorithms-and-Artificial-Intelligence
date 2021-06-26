@@ -12,12 +12,6 @@ namespace AAIFinalAssignment.statemachine
         private State previousState;
         private State currentState;
 
-        // Recursive state machines
-        protected FiniteStateMachine parentStateMachine;
-        protected List<FiniteStateMachine> childStateMachines = new List<FiniteStateMachine>();
-
-
-
         public virtual void Start()
         {
             if (StartingState != null)

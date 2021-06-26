@@ -31,10 +31,10 @@ namespace AAIFinalAssignment.behaviour
             return currentVector;
         }
 
-        public override void Render(GameTime gameTime, SpriteBatch _spriteBatch)
+/*        public override void Render(GameTime gameTime, SpriteBatch _spriteBatch)
         {
             if(Settings.renderAttractForce)
                 BehaviourUtil.RenderVector(_spriteBatch, currentVector, ownEntity.Position, 20, Color.White);
-        }
+        }*/
     }
 }

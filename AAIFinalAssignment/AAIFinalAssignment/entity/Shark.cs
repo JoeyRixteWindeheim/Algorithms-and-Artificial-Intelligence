@@ -36,7 +36,7 @@ namespace AAIFinalAssignment.entity
                 {
                     foreach (SteeringBehaviour behaviour in steeringBehaviours)
                     {
-                        behaviour.Render(gameTime, _spriteBatch);
+/*                        behaviour.Render(gameTime, _spriteBatch);*/
                         behaviour.Render(gameTime, _spriteBatch, position);
                     }
                     BehaviourUtil.RenderVector(_spriteBatch, velocity, position, 0.01, Color.Red);

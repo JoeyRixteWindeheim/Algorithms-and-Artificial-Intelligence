@@ -17,9 +17,6 @@ namespace AAIFinalAssignment
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        private List<Vehicle> vehicles = new List<Vehicle>();
-        private List<VehicleWithStates> vehiclesWithStates = new List<VehicleWithStates>();
-
         public static SpriteSheet FishSprites;
         public static SpriteSheet SharkSprites;
 
@@ -204,10 +201,6 @@ namespace AAIFinalAssignment
                 vehicle.Update(gameTime);
             }
 
-            foreach (VehicleWithStates vehicle in vehiclesWithStates)
-            {
-                vehicle.Update(gameTime);
-            }
 
             // Move target to click
             if (clickHandler.CheckMouseClicked() == true)
@@ -269,11 +262,6 @@ namespace AAIFinalAssignment
             Grid.Render(gameTime, _spriteBatch);
 
             foreach (MovingEntity vehicle in MovingEntities)
-            {
-                vehicle.Render(gameTime, _spriteBatch);
-            }
-
-            foreach (VehicleWithStates vehicle in vehiclesWithStates)
             {
                 vehicle.Render(gameTime, _spriteBatch);
             }
