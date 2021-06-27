@@ -14,8 +14,8 @@ namespace AAIFinalAssignment.statemachine.states
         {
             steeringBehaviours.Add(new WanderBehaviour(OwnerEntity));
             steeringBehaviours.Add(new DistancingBehaviour(OwnerEntity));
-            steeringBehaviours.Add(new GroupPressureBehaviour(OwnerEntity));
             steeringBehaviours.Add(new ObstacleAvoidance(OwnerEntity));
+            Name = "DontSchoolTogetherState";
         }
 
     }

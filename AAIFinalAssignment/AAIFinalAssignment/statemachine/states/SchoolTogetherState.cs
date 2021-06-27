@@ -8,14 +8,15 @@ using Microsoft.Xna.Framework;
 
 namespace AAIFinalAssignment.statemachine.states
 {
-    class NeutralState : EntityState
+    class SchoolTogetherState : EntityState
     {
-        public NeutralState(EntityStateMachine ownerFiniteStateMachine) : base(ownerFiniteStateMachine)
+        public SchoolTogetherState(EntityStateMachine ownerFiniteStateMachine) : base(ownerFiniteStateMachine)
         {
             steeringBehaviours.Add(new WanderBehaviour(OwnerEntity));
             steeringBehaviours.Add(new DistancingBehaviour(OwnerEntity));
             steeringBehaviours.Add(new GroupPressureBehaviour(OwnerEntity));
             steeringBehaviours.Add(new ObstacleAvoidance(OwnerEntity));
+            Name = "SchoolTogetherState";
         }
 
     }

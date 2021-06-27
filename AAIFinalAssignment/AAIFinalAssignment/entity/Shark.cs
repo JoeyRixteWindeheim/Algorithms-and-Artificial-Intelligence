@@ -29,16 +29,17 @@ namespace AAIFinalAssignment.entity
         {
             foreach (Vector2 position in Game1.CalculateRenderPosition(Position))
             {
-
+                
                 Game1.SharkSprites.RenderFish((float)gameTime.TotalGameTime.TotalSeconds + AnimationOfset, _spriteBatch, velocity, position, TextureNumber);
+                BehaviourStateMachine.Render(gameTime, _spriteBatch, position);
 
                 if (Settings.RenderBehaviour)
                 {
                     foreach (SteeringBehaviour behaviour in steeringBehaviours)
                     {
-                        behaviour.Render(gameTime, _spriteBatch, position);
+                        //behaviour.Render(gameTime, _spriteBatch, position);
                     }
-                    BehaviourUtil.RenderVector(_spriteBatch, velocity, position, 0.01, Color.Red);
+                    //BehaviourUtil.RenderVector(_spriteBatch, velocity, position, 0.01, Color.Red);
                 }
 
             }

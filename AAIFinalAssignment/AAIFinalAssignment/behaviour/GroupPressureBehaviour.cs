@@ -16,7 +16,7 @@ namespace AAIFinalAssignment.behaviour
         {
 
         }
-        public override Vector2 CalculateResultingVector()
+        public override Vector2? CalculateResultingVector()
         {
             var entities = Game1.GetMovingEntitiesInRange(Settings.GroupPressureRange, ownEntity);
 
@@ -39,7 +39,11 @@ namespace AAIFinalAssignment.behaviour
         public override void Render(GameTime gameTime, SpriteBatch _spriteBatch, Vector2 Position)
         {
             if (Settings.RenderGroupPressure)
+            {
+                CalculateResultingVector();
                 BehaviourUtil.RenderVector(_spriteBatch, CurrentVector, Position, 1, Color.White);
+            }
+
         }
     }
 }

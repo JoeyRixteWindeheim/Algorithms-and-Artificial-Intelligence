@@ -10,13 +10,13 @@ namespace AAIFinalAssignment.behaviour
     public class DistancingBehaviour : SteeringBehaviour
     {
 
-        private List<Vector2> targets { get; set; }
+        private List<Vector2> targets { get; set; } = new List<Vector2>();
 
         private Vector2 currentVector { get; set; }
         public DistancingBehaviour(MovingEntity ownEntity) : base(ownEntity)
         {
         }
-        public override Vector2 CalculateResultingVector()
+        public override Vector2? CalculateResultingVector()
         {
             var entities = Game1.GetMovingEntitiesInRange(Settings.DistancingRange, ownEntity);
 
@@ -41,6 +41,7 @@ namespace AAIFinalAssignment.behaviour
         {
             if (Settings.RenderDistancing)
             {
+                CalculateResultingVector();
                 BehaviourUtil.RenderVector(_spriteBatch, currentVector, Position, 20, Color.Blue);
                 foreach(Vector2 target in targets)
                 {

@@ -18,7 +18,7 @@ namespace AAIFinalAssignment.behaviour
         private bool feeler2hit;
         private bool feeler3hit;
 
-        private Vector2[] feelerArray1;
+        private Vector2[] feelerArray1 = new Vector2[0];
         private Vector2[] feelerArray2;
         private Vector2[] feelerArray3;
 
@@ -36,7 +36,7 @@ namespace AAIFinalAssignment.behaviour
             feelerArray2 = new Vector2[5];
             feelerArray3 = new Vector2[5];
 
-            for(int i = 0; i<5; i++)
+            for(int i = 0; i< feelerArray1.Length; i++)
             {
                 feelerArray1[i] = feeler1 * (i+2) * 20;
                 feelerArray2[i] = feeler2 * (i+2) * 20;
@@ -49,15 +49,18 @@ namespace AAIFinalAssignment.behaviour
             HashSet<Obstacle> obstacles = new HashSet<Obstacle>();
             for(int i = 0; i<5;i++)
             {
-                obstacles.UnionWith(Game1.GetObstaclesInRange(feelerArray1[i] + ownEntity.Position));
-                obstacles.UnionWith(Game1.GetObstaclesInRange(feelerArray2[i] + ownEntity.Position));
-                obstacles.UnionWith(Game1.GetObstaclesInRange(feelerArray3[i] + ownEntity.Position));
+                if (!Single.IsNaN(ownEntity.Position.X) && !Single.IsNaN(ownEntity.Position.Y))
+                {
+                    obstacles.UnionWith(Game1.GetObstaclesInRange(feelerArray1[i] + ownEntity.Position));
+                    obstacles.UnionWith(Game1.GetObstaclesInRange(feelerArray2[i] + ownEntity.Position));
+                    obstacles.UnionWith(Game1.GetObstaclesInRange(feelerArray3[i] + ownEntity.Position));
+                }
             }
 
             feeler1hit = feeler2hit = feeler3hit = false;
             foreach (Obstacle obstacle in obstacles)
             {
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < feelerArray1.Length; i++)
                 {
                     if (obstacle.DoIHit(feelerArray1[i] + ownEntity.Position))
                         feeler1hit = true;
@@ -69,7 +72,7 @@ namespace AAIFinalAssignment.behaviour
             }
         }
 
-        public override Vector2 CalculateResultingVector()
+        public override Vector2? CalculateResultingVector()
         {
             if (ownEntity.velocity == Vector2.Zero)
                 return Vector2.Zero;
@@ -129,9 +132,10 @@ namespace AAIFinalAssignment.behaviour
 
         public override void Render(GameTime gameTime, SpriteBatch _spriteBatch, Vector2 Position)
         {
+            CalculateResultingVector();
             BehaviourUtil.RenderVector(_spriteBatch, resultingVector, Position, 1, Color.Red);
 
-            for(int i = 0; i < 5; i++)
+            for(int i = 0; i < feelerArray1.Length ; i++)
             {
                 renderPoint(_spriteBatch, feelerArray1[i] + Position, feeler1hit);
                 renderPoint(_spriteBatch, feelerArray2[i] + Position, feeler2hit);

@@ -34,36 +34,52 @@ namespace AAIFinalAssignment.behaviour
 
         private void GenerateWaypoints()
         {
-            Waypoints = AStar.Run(ownEntity.Position, Target.Position);
+            if (Target != null)
+            {
+                Waypoints = AStar.Run(ownEntity.Position, Target.Position);
+            }
             currentWaypoint = 0;
         }
 
         private void UpdateWaypoint()
         {
-            if(currentWaypoint < Waypoints.Length && Vector2.DistanceSquared(ownEntity.Position, Game1.GetClosestCoords(ownEntity.Position, Waypoints[currentWaypoint])) < Settings.WaypointSwitchDistance * Settings.WaypointSwitchDistance)
+            if(Waypoints != null && currentWaypoint < Waypoints.Length && Vector2.DistanceSquared(ownEntity.Position, Game1.GetClosestCoords(ownEntity.Position, Waypoints[currentWaypoint])) < Settings.WaypointSwitchDistance * Settings.WaypointSwitchDistance)
             {
                 currentWaypoint++;
             }
         }
 
-        public override Vector2 CalculateResultingVector()
+        public override Vector2? CalculateResultingVector()
         {
-            if(currentWaypoint < Waypoints.Length -1)
+            if (Waypoints != null && Target != null)
             {
-                if(UpdateAstar && Vector2.DistanceSquared(Target.Position, Target.GetClosestCoords(Waypoints[Waypoints.Length-1]) ) > Game1.Grid.RegionSize * Game1.Grid.RegionSize)
+                if (currentWaypoint < Waypoints.Length - 1)
                 {
-                    GenerateWaypoints();
+                    if (UpdateAstar && Vector2.DistanceSquared(Target.Position, Target.GetClosestCoords(Waypoints[Waypoints.Length - 1])) > Game1.Grid.RegionSize * Game1.Grid.RegionSize)
+                    {
+                        GenerateWaypoints();
+                    }
+                    UpdateWaypoint();
+                    if (Waypoints != null)
+                    {
+                        return Currentvector = BehaviourUtil.CalculateSeekVector(ownEntity.Position, Game1.GetClosestCoords(ownEntity.Position, Waypoints[currentWaypoint]));
+                    }
+                    return null;
+                    
                 }
-                UpdateWaypoint();
-                return Currentvector = BehaviourUtil.CalculateSeekVector(ownEntity.Position, Game1.GetClosestCoords(ownEntity.Position, Waypoints[currentWaypoint]));
+                return Currentvector = BehaviourUtil.CalculateSeekVector(ownEntity.Position, Game1.GetClosestCoords(ownEntity.Position, Target.Position));
             }
-            return Currentvector = BehaviourUtil.CalculateSeekVector(ownEntity.Position, Game1.GetClosestCoords(ownEntity.Position, Target.Position));
+            return null;
         }
 
         public override void Render(GameTime gameTime, SpriteBatch _spriteBatch,Vector2 Position)
         {
             if(Settings.RenderSeeking)
-                BehaviourUtil.RenderVector(_spriteBatch, Currentvector, Position,20, Color.White);
+            {
+                CalculateResultingVector();
+                BehaviourUtil.RenderVector(_spriteBatch, Currentvector, Position, 20, Color.White);
+            }
+                
         }
     }
 }

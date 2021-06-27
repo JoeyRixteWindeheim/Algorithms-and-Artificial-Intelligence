@@ -34,7 +34,11 @@ namespace AAIFinalAssignment.statemachine
             // Make sure nextState is instantiated
             if (nextState != null)
             {
-                CurrentState.OnStateEnd();
+                if (CurrentState != null)
+                {
+                    CurrentState.OnStateEnd();
+                }
+
                 // used in backing up 
                 State BackupPreviousState = previousState;
                 previousState = CurrentState;
