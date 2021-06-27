@@ -18,15 +18,19 @@ namespace AAIFinalAssignment.behaviour
             urgency = 1;
         }
 
-        public override Vector2 CalculateResultingVector()
+        public override Vector2? CalculateResultingVector()
         {
-            return Currentvector = BehaviourUtil.CalculateSeekVector(ownEntity.Position, Target.GetClosestCoords(ownEntity.Position)) * -1; 
+            Currentvector = BehaviourUtil.CalculateSeekVector(ownEntity.Position, Target.GetClosestCoords(ownEntity.Position)) * -1;
+            return Currentvector;
         }
 
         public override void Render(GameTime gameTime, SpriteBatch _spriteBatch, Vector2 position)
         {
             if (Settings.RenderSeeking)
-                BehaviourUtil.RenderVector(_spriteBatch, Currentvector, position, 20, Color.White);
+            { 
+                CalculateResultingVector();
+                BehaviourUtil.RenderVector(_spriteBatch, Currentvector, position, 20, Color.Red);
+            }
         }
     }
 }

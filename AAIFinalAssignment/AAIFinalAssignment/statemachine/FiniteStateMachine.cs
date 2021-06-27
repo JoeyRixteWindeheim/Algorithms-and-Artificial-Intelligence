@@ -34,11 +34,17 @@ namespace AAIFinalAssignment.statemachine
             // Make sure nextState is instantiated
             if (nextState != null)
             {
+                if (CurrentState != null)
+                {
+                    CurrentState.OnStateEnd();
+                }
+
                 // used in backing up 
                 State BackupPreviousState = previousState;
                 previousState = CurrentState;
                 CurrentState = nextState;
                 ExecutionState stateStatus = CurrentState.OnStateEnter();
+
                 
                 // Make sure the state can be entered. If not, rollback to before the state changed
                 if (stateStatus == ExecutionState.TERMINATED)

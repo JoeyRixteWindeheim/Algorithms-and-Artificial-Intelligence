@@ -41,5 +41,21 @@ namespace AAIFinalAssignment.entity
         {
             return Settings.FishEatingRange;
         }
+
+        public Shark ReturnClosestShark(out float distance)
+        {
+            Shark closestShark = null;
+            distance = float.MaxValue;
+            foreach (Shark shark in Game1.SharkEntities)
+            {
+                float currentDistance = Vector2.DistanceSquared(shark.Position, Position);
+                if (currentDistance < distance)
+                {
+                    closestShark = shark;
+                    distance = currentDistance;
+                }
+            }
+            return closestShark;
+        }
     }
 }

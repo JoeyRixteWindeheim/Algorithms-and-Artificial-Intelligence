@@ -6,43 +6,98 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using AAIFinalAssignment.FuzzyLogic;
 using AAIFinalAssignment.statemachine.states;
+using System.Threading.Tasks;
 
 namespace AAIFinalAssignment.statemachine
 {
     public class EntityStateMachine : FiniteStateMachine
     {
-
         public MovingEntityWithStates OwnerEntity { get; set; }
+
         // Used to keep track of parent state, if it has one.
         // Used in recursive state machines
-        protected State parentState;
+        public State ParentState { get; set; }
+
+        private bool lookingForFood;
+
+        DateTime lastFoodUpdate = DateTime.Now;
 
         public EntityStateMachine(MovingEntityWithStates ownerVehicle, State startingState = null, State parentState = null)
         {
             OwnerEntity = ownerVehicle;
             this.StartingState = startingState;
-            this.parentState = parentState;
+            this.ParentState = parentState;
         }
         
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            //ThinkIfShouldEat();
+            if (OwnerEntity.FoodEaten > -5)
+            {
+                ThinkIfShouldEatTimer();
+            }
+
+            bool shouldeat;
+
+
+
+            if (Settings.DoFuzzyLogic)
+            {
+
+                shouldeat = ThinkIfShouldEat();
+            }
+            else
+            {
+                shouldeat = OwnerEntity.FoodEaten < 0;
+            }
+
+            float sharkDistance = float.MaxValue;
+            Shark closestShark = null;
+            if (OwnerEntity is Fish)
+            {
+                closestShark = ((Fish)OwnerEntity).ReturnClosestShark(out sharkDistance);
+            }
+
+            // distance in pixels squared
+            if (sharkDistance < 40000 && OwnerEntity.FoodEaten > -5)
+            {
+                SetState(new FleeFromObjectState(this,closestShark));
+            } 
+            else if (shouldeat)
+            {
+                SetState(new FindFoodState(this));
+            }
+            else
+            {
+                SetState(new NeutralState(this));
+            }
+
+
+            
+
         }
 
         public void Render(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position)
         {
-            if(CurrentState is EntityState)
+            ((EntityState)CurrentState).Render(gameTime, spriteBatch, position);
+
+
+        }
+
+        public void ThinkIfShouldEatTimer()
+        {
+            if (DateTime.Now.Subtract(lastFoodUpdate).TotalSeconds >= 1)
             {
-                ((EntityState)CurrentState).Render(gameTime, spriteBatch, position);
+                OwnerEntity.FoodEaten--;
+                lastFoodUpdate = DateTime.Now;
             }
         }
 
-        // TODO: Split this up into multiple methods
+        // TODO: REFACTOR Split this up into multiple methods
         // and call it only when neccesarry; this is too heavy now
         // Do not have time to split it up
-        void ThinkIfShouldEat()
+        bool ThinkIfShouldEat()
         {
             FuzzyModule fuzzyModule = new FuzzyModule();
 
@@ -95,32 +150,33 @@ namespace AAIFinalAssignment.statemachine
 
             /// pass variables
             //TODO: Actually get distance to food in-game
+            // Not implemented (its used for debugging) because it 
+            // seemingly doesn't accuratly produce wanted results
+            // To implement, get the nearest food source from an entity
+            // and get the distance squared towards target
             double pixelsFromFood = 300;
             distToFood.Fuzzify(pixelsFromFood);
+            
             //TODO actually implement hunger
-
             // Does not change the defuzzified value for some reason.
             // I don't know how and I do not have the time to fix it.
-            double hungerAmount = 0;
+            // First step would be to check if it changes the consequent value, etc.
+            double hungerAmount = -1 * OwnerEntity.FoodEaten;
             hunger.Fuzzify(hungerAmount);
 
             fuzzyModule.RunRules();
 
             double defuzzifiedValue = fuzzyModule.DeFuzzify("DesirabilityToEatFood");
 
-            // Value does not correspond to the value in the docs.
+
             // I don't know what I did wrong here. I don't have time to fix it.
-            if (defuzzifiedValue < 109)
-            {
-                SetState(new FindFoodState(this));
-            }
-            else
-            {
-                SetState(new NeutralState(this));
-            }
+            // Value does not correspond to the value in the docs.
+            // Unpredictable results.
+            return defuzzifiedValue < 109;
 
             
 
         }
+        public bool LookingForFood { get => lookingForFood; set => lookingForFood = value; }
     }
 }

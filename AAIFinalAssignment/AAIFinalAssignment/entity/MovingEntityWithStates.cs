@@ -29,6 +29,7 @@ namespace AAIFinalAssignment.entity
                 {
                     if (Vector2.DistanceSquared(food.Position, Position) < GetEatingRange() * GetEatingRange())
                     {
+                        FoodEaten += 10;
                         Game1.RemoveEntity(food);
                         break;
                     }

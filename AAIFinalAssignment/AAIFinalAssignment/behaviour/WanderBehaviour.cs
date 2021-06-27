@@ -20,7 +20,7 @@ namespace AAIFinalAssignment.behaviour
 
         private DateTime lastupdate = DateTime.MinValue;
 
-        public override Vector2 CalculateResultingVector()
+        public override Vector2? CalculateResultingVector()
         {
             if(DateTime.Now - lastupdate < TimeSpan.FromMilliseconds(1000))
             {
@@ -57,8 +57,9 @@ namespace AAIFinalAssignment.behaviour
         {
             if (Settings.RenderWander)
             {
+                CalculateResultingVector();
                 //BehaviourUtil.RenderCircle(_spriteBatch, wanderVector + ownEntity.Position, 10, Color.Yellow);
-                BehaviourUtil.RenderVector(_spriteBatch, CurrentVector, Position, 20, Color.Yellow);
+                BehaviourUtil.RenderVector(_spriteBatch, CurrentVector, Position, 20, Color.Navy);
             }
                 
         }

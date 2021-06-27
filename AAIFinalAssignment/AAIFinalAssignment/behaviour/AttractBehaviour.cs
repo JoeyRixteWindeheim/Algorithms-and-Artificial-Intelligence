@@ -16,7 +16,7 @@ namespace AAIFinalAssignment.behaviour
             Range = range;
             Game = game;
         }
-        public override Vector2 CalculateResultingVector()
+        public override Vector2? CalculateResultingVector()
         {
             var entities = Game1.GetMovingEntitiesInRange(Range, ownEntity);
 

@@ -24,6 +24,7 @@ namespace AAIFinalAssignment
 
         public static List<MovingEntity> MovingEntities = new List<MovingEntity>();
         public static List<Obstacle> Obstacles = new List<Obstacle>();
+        public static List<Shark> SharkEntities = new List<Shark>();
 
         public static List<BaseEntity> FishFood = new List<BaseEntity>();
         public static List<BaseEntity> SharkFood = new List<BaseEntity>();
@@ -70,9 +71,10 @@ namespace AAIFinalAssignment
             ConsoleFunctions.AddObstacles();
             AddShark(Vector2.Zero);
 
-            for (int x = 0; x < 5; x++)
+            // Change these numbers to add more fish
+            for (int x = 0; x < 3; x++)
             {
-                for (int y = 0; y < 5; y++)
+                for (int y = 0; y < 3; y++)
                 {
                     AddFlockFish(new Vector2(0 + x * 100, 0 + y * 100));
                 }
@@ -147,7 +149,8 @@ namespace AAIFinalAssignment
         public void AddShark(Vector2 position)
         {
             Shark shark = new Shark(position);
-            shark.steeringBehaviours.Add(new WanderBehaviour(shark));
+            SharkEntities.Add(shark);
+            //shark.steeringBehaviours.Add(new WanderBehaviour(shark));
             MovingEntities.Add(shark);
         }
 
@@ -200,8 +203,12 @@ namespace AAIFinalAssignment
             // Move target to click
             if (clickHandler.CheckMouseClicked() == true)
             {
-                FishFood fishFood = new FishFood(clickHandler.GetMousePosition());
-                FishFood.Add(fishFood);
+                Region mouseRegion = Grid.getRegion(clickHandler.GetMousePosition());
+                if (mouseRegion != null && !mouseRegion.ContainsObstacle() )
+                {
+                    FishFood fishFood = new FishFood(clickHandler.GetMousePosition());
+                    FishFood.Add(fishFood);
+                }
             }
             RemoveEntities();
             base.Update(gameTime);
@@ -301,7 +308,12 @@ namespace AAIFinalAssignment
         public static List<Obstacle> GetObstaclesInRange(Vector2 center)
         {
             center = getWithinField(center);
-            return Grid.getRegion(center).Obstacles;
+            if (Grid.getRegion(center) != null)
+            {
+                return Grid.getRegion(center).Obstacles;
+            }
+            else { return null; }
+            
         }
 
         public static Vector2 getWithinField(Vector2 position)
@@ -323,6 +335,14 @@ namespace AAIFinalAssignment
             {
                 position = new Vector2(position.X, position.Y + Mapsize);
             }
+/*            if (float.IsNaN(position.X))
+            {
+                position = new Vector2(0, position.Y);
+            }
+            if (float.IsNaN(position.Y))
+            {
+                position = new Vector2(position.X, 0);
+            }*/
             return position;
         }
 

@@ -12,6 +12,8 @@ namespace AAIFinalAssignment.entity
     {
         public abstract Vector2 velocity { get; set; }
 
+        int foodEaten = 10;
+
         public BaseEntity SeekTarget { 
             get 
             {
@@ -29,6 +31,8 @@ namespace AAIFinalAssignment.entity
                 return food;
             } 
         }
+
+        
 
         public List<SteeringBehaviour> steeringBehaviours = new List<SteeringBehaviour>();
 
@@ -52,9 +56,12 @@ namespace AAIFinalAssignment.entity
                 Vector2 steering = new Vector2();
                 foreach (SteeringBehaviour steeringBehaviour in steeringBehaviours)
                 {
-                    Vector2 behaviourResultingVector = steeringBehaviour.CalculateResultingVector();
-
-                    steering = Vector2.Add(steering, behaviourResultingVector);
+                    Vector2? behaviourResultingVector = steeringBehaviour.CalculateResultingVector();
+                    if (behaviourResultingVector != null)
+                    {
+                        steering = Vector2.Add(steering, (Vector2)behaviourResultingVector);
+                    }
+                    
                 }
 
 
@@ -93,10 +100,10 @@ namespace AAIFinalAssignment.entity
                     Vector2 NewPosition = Vector2.Add(Position, velocity * (float)gameTime.ElapsedGameTime.TotalSeconds);
 
 
-                    if (float.IsNaN(NewPosition.X) || float.IsInfinity(NewPosition.X) || float.IsNaN(NewPosition.Y) || float.IsInfinity(NewPosition.Y))
+/*                    if (float.IsNaN(NewPosition.X) || float.IsInfinity(NewPosition.X) || float.IsNaN(NewPosition.Y) || float.IsInfinity(NewPosition.Y))
                     {
-
-                    }
+                        NewPosition = new Vector2(0, 0);
+                    }*/
 
                     foreach (Obstacle obstacle in Game1.GetObstaclesInRange(NewPosition))
                     {
@@ -118,11 +125,14 @@ namespace AAIFinalAssignment.entity
                 {
                     if (Vector2.DistanceSquared(food.Position, Position) < GetEatingRange() * GetEatingRange())
                     {
+                        FoodEaten = 10;
                         Game1.RemoveEntity(food);
                         break;
                     }
                 }
             }
         }
+
+        public int FoodEaten { get => foodEaten; set => foodEaten = value; }
     }
 }

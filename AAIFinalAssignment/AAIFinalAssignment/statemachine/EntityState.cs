@@ -13,14 +13,18 @@ namespace AAIFinalAssignment.statemachine
     public abstract class EntityState : State
     {
         public string Name { get; set; }
-        EntityStateMachine childStateMachine;
 
-        internal MovingEntityWithStates OwnerEntity { get; set; }
+        protected EntityStateMachine childStateMachine;
+
+        protected EntityStateMachine ownerFiniteStateMachine;
+        protected MovingEntityWithStates OwnerEntity { get; set; }
+        
 
         public List<SteeringBehaviour> steeringBehaviours = new List<SteeringBehaviour>();
 
         public EntityState(EntityStateMachine ownerFiniteStateMachine)
         {
+            this.ownerFiniteStateMachine = ownerFiniteStateMachine;
             OwnerEntity = ownerFiniteStateMachine.OwnerEntity;
         }
 
@@ -48,9 +52,12 @@ namespace AAIFinalAssignment.statemachine
                 Vector2 steering = new Vector2();
                 foreach (SteeringBehaviour steeringBehaviour in steeringBehaviours)
                 {
-                    Vector2 behaviourResultingVector = steeringBehaviour.CalculateResultingVector();
+                    Vector2? behaviourResultingVector = steeringBehaviour.CalculateResultingVector();
+                    if (behaviourResultingVector != null)
+                    {
+                        steering = Vector2.Add(steering, (Vector2)behaviourResultingVector);
+                    }
 
-                    steering = Vector2.Add(steering, behaviourResultingVector);
                 }
 
 
@@ -85,10 +92,14 @@ namespace AAIFinalAssignment.statemachine
                         OwnerEntity.velocity = min;
                     }
 
-
                     Vector2 NewPosition = Vector2.Add(OwnerEntity.Position, OwnerEntity.velocity * (float)gameTime.ElapsedGameTime.TotalSeconds);
                     NewPosition = Game1.getWithinField(NewPosition);
 
+                    if (Game1.GetObstaclesInRange(NewPosition) == null)
+                    {
+                        OwnerEntity.Position = NewPosition;
+                        return;
+                    }
                     foreach (Obstacle obstacle in Game1.GetObstaclesInRange(NewPosition))
                     {
                         if (obstacle.DoIHit(NewPosition))
@@ -103,10 +114,14 @@ namespace AAIFinalAssignment.statemachine
             }
         }
 
-        public void Render(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position)
+        public virtual void Render(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position)
         {
             RenderBehaviours(gameTime, spriteBatch, position);
             RenderStates(gameTime, spriteBatch, position);
+            if (childStateMachine != null)
+            {
+                childStateMachine.Render(gameTime, spriteBatch, position);
+            }
         }
 
         public void RenderBehaviours(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position)
@@ -123,7 +138,7 @@ namespace AAIFinalAssignment.statemachine
         {
             if (Settings.RenderStates)
             {
-                spriteBatch.DrawString(Game1.spriteFont, Name, position, Color.Black);
+                spriteBatch.DrawString(Game1.spriteFont, Name, position, Color.White);
             }
         }
     }

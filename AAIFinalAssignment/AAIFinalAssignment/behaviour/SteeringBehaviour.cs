@@ -23,7 +23,7 @@ namespace AAIFinalAssignment.behaviour
             this.ownEntity = ownEntity;
         }
 
-        public abstract Vector2 CalculateResultingVector();
+        public abstract Vector2? CalculateResultingVector();
         public virtual void Render(GameTime gameTime, SpriteBatch _spriteBatch, Vector2 position) { }
     }
 }
